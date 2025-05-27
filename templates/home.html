@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<header>
+	<a>Home</a>
+	<a>News</a>
+	<a>View Cats</a>
+	<a>Volunteer</a>
+	{% if user.level == "admin" %}
+	<a>Admin</a>
+	{% endif %}
+</header>
+
+<main>
+	<section id="section-1">
+	<div id="profile-div" class="page-div">
+		<div id="details">
+			<!-- Account Details -->
+			<h2>Your Account!</h2>
+			<p id="error" class="{{ error }}"></p>
+			<div id="username-div">
+				<p class="account-detail" id="username-show">Username: {{ user.username }}</p>
+				<i class="fas fa-pen-to-square account-detail" id="edit"></i>
+				<form action="/home/{{ user.id }}" method="post" class="hidden" id="username-form">
+					{{ form.hidden_tag() }}
+					<p class="account-detail {{ error }}">
+						{{ form.username.label }}{{ form.username() }}
+						<i class="fas fa-xmark cancel" id="cancel"></i>
+						<button type="submit" name="save" class="save">
+							<i class="fas fa-check"></i>
+						</button>
+					</p>
+				</form>
+			</div>
+			<p class="account-detail">Account Level: {{ user.level|capitalize }}</p>
+			<p class="account-detail">User ID: {{ user.id }}</p>
+		</div>
+	</div>
+
+	<div id="news-div" class="page-div">
+	</div>
+	</section>
+</main>
+<script src="{{ url_for('static', filename='home.js') }}"></script>
+{% endblock %}

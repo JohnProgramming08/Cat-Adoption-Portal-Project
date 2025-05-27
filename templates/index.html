@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+{% endblock %}
+
+{% block content %}
+		<main>
+			<section id="about-section">
+				<div id="content">
+					<h1>Find your new best friend!</h1>
+					<p>We believe that all cats deserve a home and that stray cats should be a thing of the past.</p>
+					<div class="info-div">
+						<h3>Adoption Process</h3>
+						<p>To adopt a cat you need to log in to the portal, choose a cat and fill out some details, if your request is successful then we will bring the cat to you!</p>
+					</div>
+					<div class="info-div">
+						<h3>Get Involved</h3>
+						<p>After logging on to the portal you may see a volunteers page, this is where you can apply for a volunteering position.</p>
+					</div>
+				</div>
+				<img src="{{ url_for('static', filename='images/ginger_cat.png') }}">
+			</section>
+
+			<section id="login-section">
+				<h2>Adopt a cat today!</h2>
+				<form action="/" method="post">
+					{{ form.hidden_tag() }}
+					<p id="error"></p>
+					<p><div class="{{ attempt }}">{{ form.username() }}</div></p>
+					<p><div class="{{ attempt }}">{{ form.password() }}</div></p>
+					<p>{{ form.login() }}</p>
+					<p>{{ form.sign_up() }}</p>
+				</form>
+			</section>
+		</main>
+		<script src="{{ url_for('static', filename='index.js') }}"></script>
+{% endblock %}
