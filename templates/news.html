@@ -20,6 +20,7 @@
 <main>
 	<form action="/news/{{ user.id }}" method="post" id="form" class="hidden">
 		{{ form.hidden_tag() }}
+		<i class="fas fa-xmark cancel" id="cancel"></i>
 		{{ form.headline.label }}
 		{{ form.headline() }}
 		{{ form.description.label }}
@@ -27,27 +28,18 @@
 		{{ form.submit() }}
 	</form>
 
+	{% for i in news %}
 	<div class="news-div">
 		<div class="content">
-			<h2>New Website!</h2>
-			<h3>-Dylan Scully</h3>
-			<p>Epic sigma site has new website now woooo sigma sigma boi!</p>
+			<h2>{{ i.headline }}</h2>
+			<h3>- {{ i.author }}</h3>
+			<p>{{ i.description }}</p>
 		</div>
 		<div class="edit">
-			<i class="fas fa-pen-to-square edit-btn"></i>
+			<i class="fas fa-pen-to-square edit-btn" id="{{ i.id }}"></i>
 		</div>
 	</div>
-
-	<div class="news-div">
-		<div class="content">
-			<h2>Started Sigma!</h2>
-			<h3>-Sigma Boi</h3>
-			<p>Burlaloni Lulliloliiiii capebarella cocosssiniiiiiiiiiiiiiiiiiiiiii</p>
-		</div>
-		<div class="edit">
-			<i class="fas fa-pen-to-square edit-btn"></i>
-		</div>
-	</div>
+	{% endfor %}
 	
 </main>
 <script src="{{ url_for('static', filename='news.js') }}"></script>

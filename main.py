@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, jsonify
 from forms import LoginForm, UsernameForm, NewsForm
 from flask_sqlalchemy import SQLAlchemy
 
@@ -22,7 +22,6 @@ class News(db.Model):
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-	db.create_all()
 	form = LoginForm()
 	# Log in and sign up functionality
 	if form.validate_on_submit():
@@ -73,8 +72,25 @@ def home(id):
 @app.route('/news/<int:id>', methods=["GET", "POST"])
 def news(id):
 	user = User.query.filter(User.id==id).first()
+	news = News.query.all()
 	form = NewsForm()
-	return render_template("news.html", user=user, form=form)
+	if form.validate_on_submit():
+		# DETECT IF NEWS ALREADY EXISTS
+		found_news = News.query.filter
+	return render_template("news.html", user=user, form=form, news=news)
+
+
+@app.route('/get_news/<int:id>')
+def get_news(id):
+	news = News.query.filter(News.id==id).first()
+	news_dict = {
+		"id": news.id,
+		"headline": news.headline,
+		"description": news.description,
+		"author": news.author
+	}
+	return jsonify(news_dict)
+
 
 
 if __name__ == "__main__":

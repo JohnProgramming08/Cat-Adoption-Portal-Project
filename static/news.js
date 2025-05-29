@@ -1,12 +1,29 @@
 const editBtns = Array.from(document.getElementsByClassName('edit-btn'));
 const form = document.getElementById('form');
+const headlineEntry = document.getElementsByName('headline')[0];
+const descriptionEntry = document.getElementsByName('description')[0];
 const screenCover = document.getElementById('screen-cover');
+const cancelBtn = document.getElementById('cancel');
+
+async function getNews(id) {
+	const response = await fetch(`/get_news/${id}`);
+	const data = await response.json();
+	return data;
+}
 
 editBtns.forEach((btn) => {
-	btn.addEventListener('click', () => {
-		form.style.display = 'block';
-		screenCover.style.display = 'block';
+	btn.addEventListener('click', (e) => {
+		getNews(e.target.id).then(data => {
+			headlineEntry.value = data.headline;
+			descriptionEntry.value = data.description;
+		});
+		form.classList.remove('hidden');
+		screenCover.classList.remove('hidden');
 	});
 });
 
-// ADD A WAY TO GET RID OF FORM AFTER SHOWS UP
+cancelBtn.addEventListener('click', () => {
+	form.classList.add('hidden');
+	screenCover.classList.add('hidden');
+})
+

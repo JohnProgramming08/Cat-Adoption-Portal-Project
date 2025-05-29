@@ -149,3 +149,18 @@ input[type="submit"]:hover {
 .hidden {
     display: none;
 }
+
+#cancel {
+    font-size: 1.8rem;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    transition: 0.3s ease-in-out;
+    color: black;
+}
+
+#cancel:hover {
+    transform: scale(1.5, 1.5);
+    color: red;
+    cursor: pointer;
+}
