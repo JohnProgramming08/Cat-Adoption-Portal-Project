@@ -8,16 +8,19 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 db = SQLAlchemy(app)
 
 class User(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(50), nullable=False, unique=True)
-	password = db.Column(db.String(50), nullable=False)
-	level = db.Column(db.String(50), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(50), nullable=False)
+    level = db.Column(db.String(50), nullable=False)
+    news = db.relationship('News', backref='author', lazy=True)
 
 class News(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	headline = db.Column(db.String(50), nullable=False, unique=True)
-	description = db.Column(db.String(250), nullable=False, unique=True)
-	author = db.Column(db.String(50), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    headline = db.Column(db.String(50), nullable=False, unique=True)
+    description = db.Column(db.String(250), nullable=False, unique=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -75,8 +78,18 @@ def news(id):
 	news = News.query.all()
 	form = NewsForm()
 	if form.validate_on_submit():
-		# DETECT IF NEWS ALREADY EXISTS
-		found_news = News.query.filter
+		headline = form.headline.data
+		description = form.description.data
+		news_id = form.id.data
+		found_news = News.query.filter(News.id==news_id).first()
+		if found_news: # EDITING NEWS
+			found_news.headline = headline
+			found_news.description = description
+			found_news.author_id = id
+			db.session.commit()
+			return redirect(url_for("news", id=id))
+			
+
 	return render_template("news.html", user=user, form=form, news=news)
 
 
@@ -87,11 +100,11 @@ def get_news(id):
 		"id": news.id,
 		"headline": news.headline,
 		"description": news.description,
-		"author": news.author
+		"author": news.author_id
 	}
 	return jsonify(news_dict)
 
 
 
 if __name__ == "__main__":
-	app.run(debug=True, port=8000)
+	app.run(debug=True, port=5000)

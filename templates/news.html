@@ -21,6 +21,7 @@
 	<form action="/news/{{ user.id }}" method="post" id="form" class="hidden">
 		{{ form.hidden_tag() }}
 		<i class="fas fa-xmark cancel" id="cancel"></i>
+		<p class="hidden">{{ form.id }}</p>
 		{{ form.headline.label }}
 		{{ form.headline() }}
 		{{ form.description.label }}
@@ -32,7 +33,7 @@
 	<div class="news-div">
 		<div class="content">
 			<h2>{{ i.headline }}</h2>
-			<h3>- {{ i.author }}</h3>
+			<h3>- {{ i.author_id }}</h3>
 			<p>{{ i.description }}</p>
 		</div>
 		<div class="edit">

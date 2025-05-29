@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Length
 
 class LoginForm(FlaskForm):
@@ -15,4 +15,5 @@ class UsernameForm(FlaskForm):
 class NewsForm(FlaskForm):
 	headline = StringField("Headline: ", validators=[DataRequired(), Length(max=50)])
 	description = TextAreaField("Description: ", validators=[DataRequired(), Length(max=250)])
+	id = IntegerField()
 	submit = SubmitField("Submit")
