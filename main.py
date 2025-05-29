@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for
-from forms import LoginForm, UsernameForm
+from forms import LoginForm, UsernameForm, NewsForm
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -12,6 +12,12 @@ class User(db.Model):
 	username = db.Column(db.String(50), nullable=False, unique=True)
 	password = db.Column(db.String(50), nullable=False)
 	level = db.Column(db.String(50), nullable=False)
+
+class News(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	headline = db.Column(db.String(50), nullable=False, unique=True)
+	description = db.Column(db.String(250), nullable=False, unique=True)
+	author = db.Column(db.String(50), nullable=False)
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -64,6 +70,12 @@ def home(id):
 		return render_template("home.html", user=user, form=form, error="none")
 
 
+@app.route('/news/<int:id>', methods=["GET", "POST"])
+def news(id):
+	user = User.query.filter(User.id==id).first()
+	form = NewsForm()
+	return render_template("news.html", user=user, form=form)
+
 
 if __name__ == "__main__":
-	app.run(debug=True, port=5000)
+	app.run(debug=True, port=8000)

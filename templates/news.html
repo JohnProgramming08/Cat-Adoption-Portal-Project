@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='news.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<header>
+	<a href="/home/{{ user.id }}">Home</a>
+	<a href="/news/{{ user.id }}" class="selected">News</a>
+	<a>View Cats</a>
+	<a>Volunteer</a>
+	{% if user.level == "admin" %}
+	<a>Admin</a>
+	{% endif %}
+</header>
+
+<div id="screen-cover" class="hidden"></div>
+<main>
+	<form action="/news/{{ user.id }}" method="post" id="form" class="hidden">
+		{{ form.hidden_tag() }}
+		{{ form.headline.label }}
+		{{ form.headline() }}
+		{{ form.description.label }}
+		{{ form.description() }}
+		{{ form.submit() }}
+	</form>
+
+	<div class="news-div">
+		<div class="content">
+			<h2>New Website!</h2>
+			<h3>-Dylan Scully</h3>
+			<p>Epic sigma site has new website now woooo sigma sigma boi!</p>
+		</div>
+		<div class="edit">
+			<i class="fas fa-pen-to-square edit-btn"></i>
+		</div>
+	</div>
+
+	<div class="news-div">
+		<div class="content">
+			<h2>Started Sigma!</h2>
+			<h3>-Sigma Boi</h3>
+			<p>Burlaloni Lulliloliiiii capebarella cocosssiniiiiiiiiiiiiiiiiiiiiii</p>
+		</div>
+		<div class="edit">
+			<i class="fas fa-pen-to-square edit-btn"></i>
+		</div>
+	</div>
+	
+</main>
+<script src="{{ url_for('static', filename='news.js') }}"></script>
+{% endblock %}

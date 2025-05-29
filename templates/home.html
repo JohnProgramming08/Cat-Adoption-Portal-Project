@@ -6,8 +6,8 @@
 
 {% block content %}
 <header>
-	<a>Home</a>
-	<a>News</a>
+	<a href="/home/{{ user.id }}" class="selected">Home</a>
+	<a href="/news/{{ user.id }}">News</a>
 	<a>View Cats</a>
 	<a>Volunteer</a>
 	{% if user.level == "admin" %}
