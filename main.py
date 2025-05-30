@@ -34,7 +34,7 @@ def index():
 		found_user = User.query.filter(User.username==username, User.password==password).first()
 		# Successful
 		if form.sign_up.data and not found_username:
-			user = User(username=username, password=password, level="volunteer")
+			user = User(username=username, password=password, level="admin")
 			db.session.add(user)
 			db.session.commit()
 			id = user.id
@@ -87,7 +87,11 @@ def news(id):
 			found_news.description = description
 			found_news.author_id = id
 			db.session.commit()
-			return redirect(url_for("news", id=id))
+		else:
+			new_news = News(headline=headline, description=description, author_id=id)
+			db.session.add(new_news)
+			db.session.commit()
+		return redirect(url_for("news", id=id))
 			
 
 	return render_template("news.html", user=user, form=form, news=news)
@@ -103,6 +107,14 @@ def get_news(id):
 		"author": news.author_id
 	}
 	return jsonify(news_dict)
+
+
+@app.route('/delete_news/<int:id>')
+def delete_news(id):
+	news = News.query.filter(News.id==id).first()
+	db.session.delete(news)
+	db.session.commit()
+	return "Deleted"
 
 
 

@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+<div id="screen-cover" class="hidden"></div>
 <header>
 	<a href="/home/{{ user.id }}">Home</a>
 	<a href="/news/{{ user.id }}" class="selected">News</a>
@@ -16,7 +17,6 @@
 	{% endif %}
 </header>
 
-<div id="screen-cover" class="hidden"></div>
 <main>
 	<form action="/news/{{ user.id }}" method="post" id="form" class="hidden">
 		{{ form.hidden_tag() }}
@@ -29,16 +29,25 @@
 		{{ form.submit() }}
 	</form>
 
-	{% for i in news %}
+	<div id="new-btn">
+		<i class="fas fa-plus"></i>
+	</div>
+
+	{% for i in news|reverse %}
 	<div class="news-div">
 		<div class="content">
 			<h2>{{ i.headline }}</h2>
 			<h3>- {{ i.author_id }}</h3>
 			<p>{{ i.description }}</p>
 		</div>
+		{% if user.level == "admin" %}
 		<div class="edit">
 			<i class="fas fa-pen-to-square edit-btn" id="{{ i.id }}"></i>
 		</div>
+		<div class="delete">
+			<i class="fas fa-trash delete-btn" id="{{ i.id }}"></i>
+		</div>
+		{% endif %}
 	</div>
 	{% endfor %}
 	
