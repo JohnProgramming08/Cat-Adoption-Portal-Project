@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, jsonify
-from forms import LoginForm, UsernameForm, NewsForm
+from forms import LoginForm, UsernameForm, NewsForm, CatForm
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -20,7 +20,12 @@ class News(db.Model):
     description = db.Column(db.String(250), nullable=False, unique=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-
+class Cat(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(25), nullable=False)
+	bio = db.Column(db.String(100), nullable=False)
+	gender = db.Column(db.String(1), nullable=False)
+	image = db.Column(db.String(100))
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -54,14 +59,16 @@ def index():
 
 @app.route('/home/<int:id>', methods=["GET", "POST"])
 def home(id):
+	# Account details
 	user = User.query.filter(User.id==id).first()
 	form = UsernameForm()
+	newest_news = News.query.order_by(News.id.desc()).first()
 	if form.validate_on_submit():
 		username = form.username.data
 		found_user = User.query.filter(User.username==username).first()
 		if found_user and username != user.username:
 			form.username.data = user.username
-			return render_template("home.html", user=user, form=form, error="exists")
+			return render_template("home.html", user=user, form=form, error="exists", news=newest_news)
 		else:
 			user.username = username
 			db.session.commit()
@@ -69,7 +76,7 @@ def home(id):
 
 	else:
 		form.username.data = user.username
-		return render_template("home.html", user=user, form=form, error="none")
+		return render_template("home.html", user=user, form=form, error="none", news=newest_news)
 
 
 @app.route('/news/<int:id>', methods=["GET", "POST"])
@@ -82,19 +89,25 @@ def news(id):
 		description = form.description.data
 		news_id = form.id.data
 		found_news = News.query.filter(News.id==news_id).first()
-		if found_news: # EDITING NEWS
+		existing_headline = News.query.filter(News.headline==headline).first()
+		existing_description = News.query.filter(News.description==description).first()
+
+		if found_news and not existing_description and not existing_headline: # EDITING NEWS
 			found_news.headline = headline
 			found_news.description = description
 			found_news.author_id = id
 			db.session.commit()
-		else:
+		elif not existing_description and not existing_headline:
 			new_news = News(headline=headline, description=description, author_id=id)
 			db.session.add(new_news)
 			db.session.commit()
+		else:
+			return render_template("news.html", user=user, form=form, news=news, error="exists")
+
 		return redirect(url_for("news", id=id))
 			
 
-	return render_template("news.html", user=user, form=form, news=news)
+	return render_template("news.html", user=user, form=form, news=news, error="none")
 
 
 @app.route('/get_news/<int:id>')
@@ -117,6 +130,18 @@ def delete_news(id):
 	return "Deleted"
 
 
+@app.route('/cats/<int:id>')
+def cats(id):
+	user = User.query.get(id)
+	form = CatForm()
+	cats = Cat.query.all()
+	return render_template("cats.html", user=user, cats=cats)
+
+
+@app.route('/new-cat')
+def new_cat():
+	form = CatForm()
+	return render_template("new_cat.html", form=form)
 
 if __name__ == "__main__":
 	app.run(debug=True, port=5000)

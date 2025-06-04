@@ -8,7 +8,7 @@
 <header>
 	<a href="/home/{{ user.id }}" class="selected">Home</a>
 	<a href="/news/{{ user.id }}">News</a>
-	<a>View Cats</a>
+	<a href="/cats/{{ user.id }}">View Cats</a>
 	<a>Volunteer</a>
 	{% if user.level == "admin" %}
 	<a>Admin</a>
@@ -42,6 +42,12 @@
 	</div>
 
 	<div id="news-div" class="page-div">
+		<h2>Recent News</h2>
+		<div id="newest-news">
+			<h3>{{ news.headline }}</h3>
+			<h4>- {{ news.author.username }}</h4>
+		</div>
+		<a href="/news/{{ user.id }}" id="news-btn" class="page-link-btn">See more</a>
 	</div>
 	</section>
 </main>

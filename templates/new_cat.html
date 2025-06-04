@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static'), filename='new_cat.css' }}">
+{% endblock %}
+
+{% block content %}
+<header>
+	<a href="/home/{{ user.id }}" class="selected">Home</a>
+	<a href="/news/{{ user.id }}">News</a>
+	<a href="/cats/{{ user.id }}">View Cats</a>
+	<a>Volunteer</a>
+	{% if user.level == "admin" %}
+	<a>Admin</a>
+	{% endif %}
+</header>
+
+<main>
+	<form action="/new_cat" method="post" enctype="multipart/form-data">
+		{{ form.hidden_tag() }}
+		{{ form.name.label }}
+		{{ form.name() }}
+		{{ form.bio.label }}
+		{{ form.bio() }}
+		<div>{{ form.image.label }} {{ form.image() }}</div>
+		{{ form.submit() }}
+	</form>
+</main>
+{% endblock %}

@@ -59,3 +59,41 @@ header a:hover::after {
 header a:hover {
 	cursor: pointer;
 }
+
+.page-link-btn {
+    color: white;
+    background: linear-gradient(90deg, #ff9900 50%, #9999ff 50%);
+    background-size: 200% 100%;
+    background-position: right;
+    transition: background-position 0.3s ease;
+    border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+}
+
+.page-link-btn:hover {
+    background-position: left;
+}
+
+#new-btn {
+    font-size: 2rem;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: greenyellow;
+    color: white;
+    border: solid 2px green;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 7;
+}
+
+#new-btn:hover {
+    cursor: pointer;
+    background-color: green;
+    border: solid 2px greenyellow;
+}

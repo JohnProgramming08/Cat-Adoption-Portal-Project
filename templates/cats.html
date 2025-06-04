@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='cats.css') }}">
+{% endblock %}
+
+{% block content %}
+<header>
+	<a href="/home/{{ user.id }}" class="selected">Home</a>
+	<a href="/news/{{ user.id }}">News</a>
+	<a href="/cats/{{ user.id }}">View Cats</a>
+	<a>Volunteer</a>
+	{% if user.level == "admin" %}
+	<a>Admin</a>
+	{% endif %}
+</header>
+
+<main>
+	<a href="/new-cat">
+		<div id="new-btn">
+			<i class="fas fa-plus"></i>
+		</div>
+	</a>
+
+	{% for cat in cats %}
+	<div class="cat-listing">
+		<img class="cat-img" src="{{ url_for('static', filename='images/' ~ cat.image) }}">
+		<div class="cat-text">
+			<h2 class="name">{{ cat.name }} ({{ cat.gender }})</h2>
+			<p class="bio">{{ cat.bio }}</p>
+			<a class="page-link-btn cat-btn">Adopt me</a>
+		</div>
+	</div>
+	{% endfor %}
+</main>
+{% endblock %}

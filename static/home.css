@@ -126,5 +126,34 @@ form {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	align-items: center;
 	padding: 20px;
+}
+
+#newest-news {
+	width: 100%;
+	height: 15vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: #dddddd;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+h3 {
+	width: 100%;
+	font-size: 1.8rem;
+}
+
+h4 {
+	width: 100%;
+	font-size: 1.4rem;
+}
+
+#news-btn {
+	margin-top: 25px;
+    width: 45%;
+    font-size: 1.4rem;
+    height: 7vh;
 }

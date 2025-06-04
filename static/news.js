@@ -7,6 +7,8 @@ const screenCover = document.getElementById('screen-cover');
 const cancelBtn = document.getElementById('cancel');
 const newBtn = document.getElementById('new-btn');
 const deleteBtns = Array.from(document.getElementsByClassName('delete-btn'));
+const error = document.getElementById('error');
+
 
 async function getNews(id) {
 	const response = await fetch(`/get_news/${id}`);
@@ -49,3 +51,8 @@ deleteBtns.forEach(btn => {
 		deleteNews(e.target.id);
 	});
 });
+
+if (error.classList.contains('exists')) {
+	error.classList.remove('hidden');
+	form.classList.remove('hidden');
+}

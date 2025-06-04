@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, SelectField, FileField
 from wtforms.validators import DataRequired, Length
 
 class LoginForm(FlaskForm):
@@ -17,3 +17,9 @@ class NewsForm(FlaskForm):
 	description = TextAreaField("Description: ", validators=[DataRequired(), Length(max=250)])
 	id = IntegerField()
 	submit = SubmitField("Submit")
+
+class CatForm(FlaskForm):
+	name = StringField("Name: ", validators=[DataRequired(), Length(max=25)])
+	bio = StringField("Bio: ", validators=[DataRequired(), Length(max=100)])
+	gender = SelectField("Gender: ", choices=[('M', 'Male'), ('F', 'Female')], validators=[DataRequired()])
+	image = FileField("Image: ")

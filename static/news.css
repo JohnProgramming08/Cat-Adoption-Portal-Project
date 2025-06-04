@@ -173,23 +173,14 @@ input[type="submit"]:hover {
     cursor: pointer;
 }
 
-#new-btn {
-    font-size: 2rem;
-    padding: 10px;
+.exists input, .exists textarea {
+    border: 2px solid red;
+}
+
+form div {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: greenyellow;
-    color: white;
-    border: solid 2px green;
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 7;
 }
 
-#new-btn:hover {
-    cursor: pointer;
-    background-color: green;
-    border: solid 2px greenyellow;
-}

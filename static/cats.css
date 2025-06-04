@@ -1,0 +1,53 @@
+body {
+	background-color: #ffe1f3;
+	overflow-x: hidden;
+}
+
+main {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 4rem;
+	width: 90%;
+	margin: auto;
+}
+
+.cat-listing {
+	margin-top: 15px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.cat-text {
+	width: 100%;
+	background-color: lightpink;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: purple;
+}
+
+.cat-img {
+	width: 100%;
+}
+
+.name {
+	margin-top: 20px;
+	font-size: 1.7rem;
+	margin-bottom: 5px;
+}
+
+.bio {
+	margin: 10px;
+	font-size: 1.4rem;
+}
+
+.cat-btn {
+	height: 7vh;
+	width: 45%;
+	font-size: 1.4rem;
+	margin-bottom: 10px;
+}

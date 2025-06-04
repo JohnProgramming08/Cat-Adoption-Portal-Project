@@ -10,7 +10,7 @@
 <header>
 	<a href="/home/{{ user.id }}">Home</a>
 	<a href="/news/{{ user.id }}" class="selected">News</a>
-	<a>View Cats</a>
+	<a href="/cats/{{ user.id }}">View Cats</a>
 	<a>Volunteer</a>
 	{% if user.level == "admin" %}
 	<a>Admin</a>
@@ -22,10 +22,11 @@
 		{{ form.hidden_tag() }}
 		<i class="fas fa-xmark cancel" id="cancel"></i>
 		<p class="hidden">{{ form.id }}</p>
+		<p id="error" class="{{ error }} hidden">That headline or description is already in use.</p>
 		{{ form.headline.label }}
-		{{ form.headline() }}
+		<div class="{{ error }}">{{ form.headline() }}</div>
 		{{ form.description.label }}
-		{{ form.description() }}
+		<div class="{{ error }}">{{ form.description() }}</div>
 		{{ form.submit() }}
 	</form>
 
@@ -37,7 +38,7 @@
 	<div class="news-div">
 		<div class="content">
 			<h2>{{ i.headline }}</h2>
-			<h3>- {{ i.author_id }}</h3>
+			<h3>- {{ i.author.username }}</h3>
 			<p>{{ i.description }}</p>
 		</div>
 		{% if user.level == "admin" %}
