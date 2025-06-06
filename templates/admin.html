@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block style %} {% endblock %}
+
+{% block content %}
+<header>
+	<a href="/home/{{ user.id }}">Home</a>
+	<a href="/news/{{ user.id }}">News</a>
+	<a href="/cats/{{ user.id }}" class="selected">View Cats</a>
+	<a>Volunteer</a>
+	{% if user.level == "admin" %}
+	<a>Admin</a>
+	{% endif %}
+</header>
+
+<main>
+	<section id="cat-form-section">
+		<h2>Cat Adoption Forms</h2>
+		{% for form in forms %}
+		<div class="cat-form">
+			<p>User ID: {{ form.user_id }} Cat ID: {{ form.cat.id }}</p>
+			<a href="/form_review/{{ form.id }}">{{ form.id }} -|- Cat adoption form for {{ form.cat.name }}</a>
+		</div>
+		{% endfor %}
+	</section>
+</main>
+{% endblock %}

@@ -30,9 +30,11 @@
 		{{ form.submit() }}
 	</form>
 
+	{% if user.level=="admin" %}
 	<div id="new-btn">
 		<i class="fas fa-plus"></i>
 	</div>
+	{% endif %}
 
 	{% for i in news|reverse %}
 	<div class="news-div">

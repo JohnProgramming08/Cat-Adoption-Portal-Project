@@ -6,32 +6,47 @@
 {% endblock %}
 
 {% block content %}
+<div id="screen-cover" class="hidden"></div>
 <header>
-	<a href="/home/{{ user.id }}" class="selected">Home</a>
+	<a href="/home/{{ user.id }}">Home</a>
 	<a href="/news/{{ user.id }}">News</a>
-	<a href="/cats/{{ user.id }}">View Cats</a>
+	<a href="/cats/{{ user.id }}" class="selected">View Cats</a>
 	<a>Volunteer</a>
 	{% if user.level == "admin" %}
 	<a>Admin</a>
 	{% endif %}
 </header>
 
-<main>
-	<a href="/new-cat">
+{% if user.level=="admin" %}
+	<a href="/new_cat/{{ user.id }}">
 		<div id="new-btn">
 			<i class="fas fa-plus"></i>
 		</div>
 	</a>
-
+{% endif %}
+<main>
 	{% for cat in cats %}
 	<div class="cat-listing">
 		<img class="cat-img" src="{{ url_for('static', filename='images/' ~ cat.image) }}">
 		<div class="cat-text">
 			<h2 class="name">{{ cat.name }} ({{ cat.gender }})</h2>
 			<p class="bio">{{ cat.bio }}</p>
-			<a class="page-link-btn cat-btn">Adopt me</a>
+			<div class="page-link-btn cat-btn" id="{{ cat.id }}">Adopt me</div>
 		</div>
 	</div>
 	{% endfor %}
+
+	<form action="/cats/{{ user.id }}" method="post" class="hidden">
+		<i class="fas fa-xmark cancel" id="cancel"></i>
+		{{ form.hidden_tag() }}
+		<div class="hidden">{{ form.cat_id() }}</div>
+		{{ form.address.label }}
+		{{ form.address() }}
+		<div>{{ form.other_pets.label }} {{ form.other_pets() }}</div>
+		{{ form.reason.label }}
+		{{ form.reason() }}
+		{{ form.submit() }}
+	</form>
 </main>
+<script src="{{ url_for('static', filename='cats.js') }}"></script>
 {% endblock %}

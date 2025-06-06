@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, SelectField, FileField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, NumberRange
 
 class LoginForm(FlaskForm):
 	username = StringField("Username", render_kw={"placeholder": "Username"}, validators=[DataRequired(), Length(max=50)])
@@ -19,7 +19,15 @@ class NewsForm(FlaskForm):
 	submit = SubmitField("Submit")
 
 class CatForm(FlaskForm):
-	name = StringField("Name: ", validators=[DataRequired(), Length(max=25)])
-	bio = StringField("Bio: ", validators=[DataRequired(), Length(max=100)])
-	gender = SelectField("Gender: ", choices=[('M', 'Male'), ('F', 'Female')], validators=[DataRequired()])
-	image = FileField("Image: ")
+	name = StringField("Name", validators=[DataRequired(), Length(max=25)])
+	bio = TextAreaField("Bio", validators=[DataRequired(), Length(max=100)])
+	gender = SelectField("Gender", choices=[('M', 'Male'), ('F', 'Female')], validators=[DataRequired()])
+	image = FileField("Image")
+	submit = SubmitField("Submit")
+
+class AdoptForm(FlaskForm):
+	cat_id = IntegerField(validators=[DataRequired()])
+	address = StringField("Address", validators=[DataRequired(), Length(max=30)])
+	other_pets = IntegerField("How many other pets do you have?", validators=[DataRequired() ,NumberRange(min=0)])
+	reason = TextAreaField("Why do you want to adopt a cat?", validators=[DataRequired(), Length(max=100)])
+	submit = SubmitField("Submit")

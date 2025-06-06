@@ -1,6 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, jsonify
-from forms import LoginForm, UsernameForm, NewsForm, CatForm
+from forms import LoginForm, UsernameForm, NewsForm, CatForm, AdoptForm
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 app.secret_key = "Kitty Cat"
@@ -13,6 +15,7 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     level = db.Column(db.String(50), nullable=False)
     news = db.relationship('News', backref='author', lazy=True)
+    forms = db.relationship('AdoptionForm', backref='user', lazy=True)
 
 class News(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +29,15 @@ class Cat(db.Model):
 	bio = db.Column(db.String(100), nullable=False)
 	gender = db.Column(db.String(1), nullable=False)
 	image = db.Column(db.String(100))
+	forms = db.relationship('AdoptionForm', backref='cat', lazy=True)
+
+class AdoptionForm(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	address = db.Column(db.String(30), nullable=False)
+	other_pets = db.Column(db.Integer, nullable=False)
+	reason = db.Column(db.Integer, nullable=False)
+	cat_id = db.Column(db.Integer, db.ForeignKey('cat.id'), nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -130,18 +142,40 @@ def delete_news(id):
 	return "Deleted"
 
 
-@app.route('/cats/<int:id>')
+@app.route('/cats/<int:id>', methods=["GET", "POST"])
 def cats(id):
 	user = User.query.get(id)
-	form = CatForm()
+	form = AdoptForm()
 	cats = Cat.query.all()
-	return render_template("cats.html", user=user, cats=cats)
+	if form.validate_on_submit():
+		cat_id = form.cat_id.data
+		address = form.address.data
+		other_pets = form.other_pets.data
+		reason = form.reason.data
+		adoption_form = AdoptionForm(address=address, other_pets=other_pets, reason=reason, cat_id=cat_id, user_id=id)
+		db.session.add(adoption_form)
+		db.session.commit()
+	return render_template("cats.html", user=user, cats=cats, form=form)
 
 
-@app.route('/new-cat')
-def new_cat():
+@app.route('/new_cat/<int:id>')
+def new_cat(id):
 	form = CatForm()
-	return render_template("new_cat.html", form=form)
+	user = User.query.get(id)
+	if form.validate_on_submit():
+		name = form.name.data
+		bio = form.bio.data
+		gender = form.gender.data
+		image = form.image.data
+		filename = secure_filename(image.filename)
+		image.save(os.path.join('static/images', filename))
+		cat = Cat(name=name, bio=bio, gender=gender, image=f'{filename}')
+		db.session.add(cat)
+		db.session.commit()
+		return redirect(url_for('cats', id=id))
+	return render_template("new_cat.html", form=form, user=user)
 
 if __name__ == "__main__":
 	app.run(debug=True, port=5000)
+
+# MAKE IT SO ADMINS CAN VIEW ADOPTION FORMS
