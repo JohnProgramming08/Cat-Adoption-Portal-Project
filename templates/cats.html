@@ -13,7 +13,7 @@
 	<a href="/cats/{{ user.id }}" class="selected">View Cats</a>
 	<a>Volunteer</a>
 	{% if user.level == "admin" %}
-	<a>Admin</a>
+	<a href="/admin/{{ user.id }}">Admin</a>
 	{% endif %}
 </header>
 
@@ -48,5 +48,6 @@
 		{{ form.submit() }}
 	</form>
 </main>
+
 <script src="{{ url_for('static', filename='cats.js') }}"></script>
 {% endblock %}

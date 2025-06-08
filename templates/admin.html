@@ -1,27 +1,67 @@
 {% extends "base.html" %}
 
-{% block style %} {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
 
 {% block content %}
+<div id="screen-cover" class="hidden"></div>
 <header>
 	<a href="/home/{{ user.id }}">Home</a>
 	<a href="/news/{{ user.id }}">News</a>
-	<a href="/cats/{{ user.id }}" class="selected">View Cats</a>
+	<a href="/cats/{{ user.id }}">View Cats</a>
 	<a>Volunteer</a>
 	{% if user.level == "admin" %}
-	<a>Admin</a>
+	<a href="/admin/{{ user.id }}" class="selected">Admin</a>
 	{% endif %}
 </header>
 
 <main>
+	<section id="form-review-section" class="center-form hidden">
+		<div id="original-form">
+			<div id="cat-details">
+				<h2>Cat Details</h2>
+				<div class="identity">
+					<h3 id="cat-id">Cat ID: </h3>
+					<h3 id="cat-name">Cat Name: </h3>
+				</div>
+				<h3>Cat Bio</h3>
+				<p id="cat-bio"></p>
+			</div>
+
+			<div id="user-details">
+				<h2>User Details</h2>
+				<div class="identity">
+					<h3 id="username">Username: </h3>
+					<h3 id="user-id">User ID: </h3>
+				</div>
+				<h3 id="user-address">Address: </h3>
+				<h3 id="other-pets">Other Pets: </h3>
+				<h3>Reason</h3>
+				<p id="reason"></p>
+			</div>
+		</div>
+		<form action="/admin/{{ user.id }}" method="post">
+			{{ review_form.hidden_tag() }}
+			{{ review_form.reason.label }}
+			{{ review_form.reason() }}
+			{{ review_form.accept() }}
+			{{ review_form.decline() }}
+		</form>
+		<i class="fas fa-xmark form-cancel"></i>
+	</section>
+	
 	<section id="cat-form-section">
 		<h2>Cat Adoption Forms</h2>
 		{% for form in forms %}
 		<div class="cat-form">
 			<p>User ID: {{ form.user_id }} Cat ID: {{ form.cat.id }}</p>
-			<a href="/form_review/{{ form.id }}">{{ form.id }} -|- Cat adoption form for {{ form.cat.name }}</a>
+			<p class="form-link" id="{{ form.id }}">{{ form.id }} -|- Cat adoption form for {{ form.cat.name }}</p>
 		</div>
 		{% endfor %}
 	</section>
 </main>
+
+<script src="{{ url_for('static', filename='admin.js') }}"></script>
 {% endblock %}

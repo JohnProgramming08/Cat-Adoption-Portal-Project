@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, jsonify
-from forms import LoginForm, UsernameForm, NewsForm, CatForm, AdoptForm
+from forms import LoginForm, UsernameForm, NewsForm, CatForm, AdoptForm, ReviewAdoptForm
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import os
@@ -175,7 +175,32 @@ def new_cat(id):
 		return redirect(url_for('cats', id=id))
 	return render_template("new_cat.html", form=form, user=user)
 
-if __name__ == "__main__":
-	app.run(debug=True, port=5000)
 
-# MAKE IT SO ADMINS CAN VIEW ADOPTION FORMS
+@app.route('/admin/<int:id>', methods=["GET", "POST"])
+def admin(id):
+	review_form = ReviewAdoptForm()
+	user = User.query.get(id)
+	adoption_forms = AdoptionForm.query.all()
+	if review_form.validate_on_submit():
+		pass
+	return render_template('admin.html', forms=adoption_forms, user=user, review_form=review_form)
+
+
+@app.route('/find_form/<int:id>')
+def find_form(id):
+	form = AdoptionForm.query.get(id)
+	form_dict = {
+		"id": form.id,
+		"address": form.address,
+		"other_pets": form.other_pets,
+		"reason": form.reason,
+		"cat_id": form.cat.id,
+		"cat_name": form.cat.name,
+		"cat_bio": form.cat.bio,
+		"user_id": form.user.id,
+		"username": form.user.username
+	}
+	return jsonify(form_dict)
+
+if __name__ == "__main__":
+	app.run(debug=True, port=8000)

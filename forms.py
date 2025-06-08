@@ -31,3 +31,8 @@ class AdoptForm(FlaskForm):
 	other_pets = IntegerField("How many other pets do you have?", validators=[DataRequired() ,NumberRange(min=0)])
 	reason = TextAreaField("Why do you want to adopt a cat?", validators=[DataRequired(), Length(max=100)])
 	submit = SubmitField("Submit")
+
+class ReviewAdoptForm(FlaskForm):
+	reason = TextAreaField("Reason (only if declined):", validators=[Length(max=30)])
+	accept = SubmitField("Accept")
+	decline = SubmitField("Decline")

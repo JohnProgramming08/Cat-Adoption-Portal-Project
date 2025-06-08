@@ -11,7 +11,7 @@
 	<a href="/cats/{{ user.id }}">View Cats</a>
 	<a>Volunteer</a>
 	{% if user.level == "admin" %}
-	<a>Admin</a>
+	<a href="/admin/{{ user.id }}">Admin</a>
 	{% endif %}
 </header>
 
