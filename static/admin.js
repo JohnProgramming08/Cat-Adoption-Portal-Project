@@ -2,6 +2,9 @@ const cancel = Array.from(document.getElementsByClassName('form-cancel'))[0];
 const formSection = document.getElementById('form-review-section');
 const adoptionForms = Array.from(document.getElementsByClassName('form-link'));
 const screenCover = document.getElementById('screen-cover');
+const formIdInput = Array.from(document.getElementsByName('form_id'))[0];
+const reasonInput = document.querySelector('textarea');
+
 
 const formDisplays = [
     { element: document.getElementById('username'), key: 'username', foretext: 'Username: '},
@@ -27,6 +30,8 @@ adoptionForms.forEach(form => {
 			formDisplays.forEach(({element, key, foretext}) => {
 				element.textContent = foretext ? `${foretext} ${data[key]}` : data[key];
 			});
+			formIdInput.value = data.id;
+			reasonInput.value = '';
 			formSection.style.display = 'flex';
 			screenCover.style.display = 'block';
 		});

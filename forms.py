@@ -33,6 +33,7 @@ class AdoptForm(FlaskForm):
 	submit = SubmitField("Submit")
 
 class ReviewAdoptForm(FlaskForm):
+	form_id = IntegerField(validators=[DataRequired()])
 	reason = TextAreaField("Reason (only if declined):", validators=[Length(max=30)])
 	accept = SubmitField("Accept")
 	decline = SubmitField("Decline")

@@ -44,6 +44,7 @@
 		</div>
 		<form action="/admin/{{ user.id }}" method="post">
 			{{ review_form.hidden_tag() }}
+			{{ review_form.form_id() }}
 			{{ review_form.reason.label }}
 			{{ review_form.reason() }}
 			{{ review_form.accept() }}
@@ -55,10 +56,13 @@
 	<section id="cat-form-section">
 		<h2>Cat Adoption Forms</h2>
 		{% for form in forms %}
+		{% if form.review %}
+		{% else %}
 		<div class="cat-form">
 			<p>User ID: {{ form.user_id }} Cat ID: {{ form.cat.id }}</p>
 			<p class="form-link" id="{{ form.id }}">{{ form.id }} -|- Cat adoption form for {{ form.cat.name }}</p>
 		</div>
+		{% endif %}
 		{% endfor %}
 	</section>
 </main>

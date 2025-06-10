@@ -145,3 +145,23 @@ header a:hover {
     color: red;
     cursor: pointer;
 }
+
+#cat-details, #user-details {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	background-color: #e0e0e0;
+	border-bottom: 2px solid grey;
+	width: 100%;
+}
+
+#user-details {
+	border-bottom: none;
+}
+
+#user-details *, #cat-details * {
+	padding-top: 3px;
+	padding-bottom: 3px;
+}

@@ -35,13 +35,22 @@ class AdoptionForm(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	address = db.Column(db.String(30), nullable=False)
 	other_pets = db.Column(db.Integer, nullable=False)
-	reason = db.Column(db.Integer, nullable=False)
+	reason = db.Column(db.String(100), nullable=False)
 	cat_id = db.Column(db.Integer, db.ForeignKey('cat.id'), nullable=False)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	review = db.relationship('AdoptionFormReview', backref='form', uselist=False)
+
+class AdoptionFormReview(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	status = db.Column(db.String(30), nullable=False)
+	reason = db.Column(db.String(30))
+	form_id = db.Column(db.Integer, db.ForeignKey('adoption_form.id'), unique=True, nullable=False)
+
 
 
 @app.route('/', methods=["GET", "POST"])
 def index():
+	db.create_all()
 	form = LoginForm()
 	# Log in and sign up functionality
 	if form.validate_on_submit():
@@ -75,12 +84,13 @@ def home(id):
 	user = User.query.filter(User.id==id).first()
 	form = UsernameForm()
 	newest_news = News.query.order_by(News.id.desc()).first()
+	user_adoptions = AdoptionForm.query.filter(AdoptionForm.user_id==id).all()
 	if form.validate_on_submit():
 		username = form.username.data
 		found_user = User.query.filter(User.username==username).first()
 		if found_user and username != user.username:
 			form.username.data = user.username
-			return render_template("home.html", user=user, form=form, error="exists", news=newest_news)
+			return render_template("home.html", user=user, form=form, error="exists", news=newest_news, asoptions=user_adoptions)
 		else:
 			user.username = username
 			db.session.commit()
@@ -88,7 +98,7 @@ def home(id):
 
 	else:
 		form.username.data = user.username
-		return render_template("home.html", user=user, form=form, error="none", news=newest_news)
+		return render_template("home.html", user=user, form=form, error="none", news=newest_news, adoptions=user_adoptions)
 
 
 @app.route('/news/<int:id>', methods=["GET", "POST"])
@@ -155,6 +165,7 @@ def cats(id):
 		adoption_form = AdoptionForm(address=address, other_pets=other_pets, reason=reason, cat_id=cat_id, user_id=id)
 		db.session.add(adoption_form)
 		db.session.commit()
+		return redirect(url_for('cats', id=id))
 	return render_template("cats.html", user=user, cats=cats, form=form)
 
 
@@ -181,8 +192,16 @@ def admin(id):
 	review_form = ReviewAdoptForm()
 	user = User.query.get(id)
 	adoption_forms = AdoptionForm.query.all()
-	if review_form.validate_on_submit():
-		pass
+	new_review = 0
+	if review_form.validate_on_submit() and review_form.accept.data:
+		new_review = AdoptionFormReview(status="To be delivered", form_id=review_form.form_id.data)
+	elif review_form.validate_on_submit() and review_form.decline.data:
+		new_review = AdoptionFormReview(status="Declined", reason=review_form.reason.data, form_id=review_form.form_id.data)
+	if new_review:
+		db.session.add(new_review)
+		db.session.commit()
+		return redirect(url_for("admin", id=id))
+		
 	return render_template('admin.html', forms=adoption_forms, user=user, review_form=review_form)
 
 
@@ -204,3 +223,7 @@ def find_form(id):
 
 if __name__ == "__main__":
 	app.run(debug=True, port=8000)
+
+
+# MAKE IT SO USERS CAN SEE THE STATUS OF FORMS IN HOME.HTML
+# BUT FIRST CHANGE ACCEPTED IN DATABASE TO STRING STATUS

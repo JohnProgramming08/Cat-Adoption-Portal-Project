@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<div id="screen-cover" class="hidden"></div>
 <header>
 	<a href="/home/{{ user.id }}" class="selected">Home</a>
 	<a href="/news/{{ user.id }}">News</a>
@@ -16,6 +17,27 @@
 </header>
 
 <main>
+	<div class="center-form" id="form-show">
+		<div id="cat-details">
+			<i class="fas fa-xmark form-cancel" id="cancel"></i>
+			<h2>Cat Details</h2>
+			<div class="identity">
+				<h3 id="cat-id">Cat ID: </h3>
+				<h3 id="cat-name">Cat Name: </h3>
+			</div>
+			<h3>Cat Bio</h3>
+			<p id="cat-bio"></p>
+		</div>
+
+		<div id="user-details">
+			<h2>Your Input</h2>
+			<h3 id="user-address">Address: </h3>
+			<h3 id="other-pets">Other Pets: </h3>
+			<h3>Reason</h3>
+			<h4 id="reason"></h4>
+		</div>
+	</div>
+
 	<section id="section-1">
 	<div id="profile-div" class="page-div">
 		<div id="details">
@@ -50,6 +72,32 @@
 			{% endif %}
 		</div>
 		<a href="/news/{{ user.id }}" id="news-btn" class="page-link-btn">See more</a>
+	</div>
+	</section>
+
+	<section id="section-2">
+	<div id="adoptions-div" class="page-div">
+		<h2>Your Adoption Forms</h2>
+		<div id="user-adoptions">
+			{% if adoptions %}
+			{% for form in adoptions|reverse %}
+			<div class="cat-form">
+				<p class="form-link" id="{{ form.id }}">{{ form.id }} -|- Cat adoption form for {{ form.cat.name }}</p>
+				{% if form.review %}
+					{% if form.review.status=="Declined" %}
+						<p class="denied">{{ form.review.status }}</p>
+					{% else %}
+						<p class="accepted">{{ form.review.status }}</p>
+					{% endif %}
+				{% endif %}
+			</div>
+			{% endfor %}
+			{% else %}
+			<p class="no-adoptions">Oh no! You don't have any adoption forms.</p>
+			<p class="no-adoptions">Would you like to submit one?</p>
+			<a href="/cats/{{ user.id}}" class="page-link-btn" id="adoption-btn">See Cats!</a>
+			{% endif %}
+		</div>
 	</div>
 	</section>
 </main>
