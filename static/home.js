@@ -19,6 +19,8 @@ const formDisplays = [
     { element: document.getElementById('cat-name'), key: 'cat_name', foretext: 'Cat Name: ' },
     { element: document.getElementById('cat-bio'), key: 'cat_bio', foretext: '' }
 ];
+const headerHome = document.getElementById('header-home');
+headerHome.classList.add('selected');
 
 editBtn.addEventListener('click', () => {
 	editBtn.classList.add('hidden');

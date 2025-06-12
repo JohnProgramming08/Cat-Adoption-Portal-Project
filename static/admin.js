@@ -4,6 +4,8 @@ const adoptionForms = Array.from(document.getElementsByClassName('form-link'));
 const screenCover = document.getElementById('screen-cover');
 const formIdInput = Array.from(document.getElementsByName('form_id'))[0];
 const reasonInput = document.querySelector('textarea');
+const headerAdmin = document.getElementById('header-admin');
+headerAdmin.classList.add('selected');
 
 
 const formDisplays = [

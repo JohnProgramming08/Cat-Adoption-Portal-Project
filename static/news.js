@@ -8,6 +8,8 @@ const cancelBtn = document.getElementById('cancel');
 const newBtn = document.getElementById('new-btn');
 const deleteBtns = Array.from(document.getElementsByClassName('delete-btn'));
 const error = document.getElementById('error');
+const headerNews = document.getElementById('header-news');
+headerNews.classList.add('selected');
 
 
 async function getNews(id) {

@@ -37,3 +37,12 @@ class ReviewAdoptForm(FlaskForm):
 	reason = TextAreaField("Reason (only if declined):", validators=[Length(max=30)])
 	accept = SubmitField("Accept")
 	decline = SubmitField("Decline")
+
+class VolunteerRequestForm(FlaskForm):
+	first_name = StringField("First Name", validators=[DataRequired(), Length(max=50)])
+	last_name = StringField("Last Name", validators=[DataRequired(), Length(max=50)])
+	address = StringField("Address", validators=[DataRequired(), Length(max=50)])
+	age = IntegerField("Age", validators=[DataRequired(), NumberRange(min=0)])
+	reason = TextAreaField("Reason", validators=[DataRequired(), Length(max=500)])
+	submit = SubmitField("Submit")
+	

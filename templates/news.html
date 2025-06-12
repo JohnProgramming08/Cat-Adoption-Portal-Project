@@ -7,15 +7,6 @@
 
 {% block content %}
 <div id="screen-cover" class="hidden"></div>
-<header>
-	<a href="/home/{{ user.id }}">Home</a>
-	<a href="/news/{{ user.id }}" class="selected">News</a>
-	<a href="/cats/{{ user.id }}">View Cats</a>
-	<a>Volunteer</a>
-	{% if user.level == "admin" %}
-	<a href="/admin/{{ user.id }}">Admin</a>
-	{% endif %}
-</header>
 
 <main>
 	<form action="/news/{{ user.id }}" method="post" id="form" class="hidden">

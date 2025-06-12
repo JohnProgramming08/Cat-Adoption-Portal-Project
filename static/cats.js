@@ -4,6 +4,8 @@ const catIdInput = document.getElementsByName('cat_id')[0];
 const screenCover = document.getElementById('screen-cover');
 const cancel = document.getElementById('cancel');
 const fields = Array.from(form.querySelectorAll('input, textarea'));
+const headerCats = document.getElementById('header-cats');
+headerCats.classList.add('selected');
 
 adoptButtons.forEach(button => {
 	button.addEventListener('click', e => {

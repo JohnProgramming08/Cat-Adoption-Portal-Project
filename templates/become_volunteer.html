@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='become_volunteer.css')}}">
+{% endblock %}
+
+{% block content %}
+<main>
+	<section id="volunteer-story">
+		<h2>{{ volunteer.first_name }}'s Volunteer Story</h2>
+		<img id="volunteer-img" src="{{ url_for('static', filename='images/volunteer.jpeg')}}">
+		<p class="story-text">{{ volunteer.story }}</p>
+		<p class="story-text">{{ volunteer.first_name }} had an amazing time and really made an impact. You can too!</p>
+	</section>
+	
+	<section id="form-section">
+		<h2>Sign Up Today</h2>
+		<form method="post" action="/become_volunteer/{{ user.id }}">
+			{{ form.hidden_tag() }}
+			{{ form.first_name.label }}
+			{{ form.first_name() }}
+			{{ form.last_name.label }}
+			{{ form.last_name() }}
+			{{ form.address.label }}
+			{{ form.address() }}
+			{{ form.age.label }}
+			{{ form.age() }}
+			{{ form.reason.label }}
+			{{ form.reason() }}
+			{{ form.submit() }}
+		</form>
+	</section>
+</main>
+
+<script>
+	const headerVolunteer = document.getElementById('header-volunteer');
+	headerVolunteer.classList.add('selected');
+</script>
+{% endblock %}

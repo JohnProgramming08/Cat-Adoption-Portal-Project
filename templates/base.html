@@ -10,6 +10,22 @@
 	</head>
 
 	<body>
+		{% if user %}
+		<header>
+			<a href="/home/{{ user.id }}" id="header-home">Home</a>
+			<a href="/news/{{ user.id }}" id="header-news">News</a>
+			<a href="/cats/{{ user.id }}" id="header-cats">View Cats</a>
+			{% if user.level == "user" %}
+			<a href="/become_volunteer/{{ user.id }}" id="header-volunteer">Volunteer</a>
+			{% else %}
+			<a href="/is_volunteer/{{ user.id }}" id="header-volunteer">Volunteer</a>
+			{% endif %}
+			{% if user.level == "admin" %}
+			<a href="/admin/{{ user.id }}" id="header-admin">Admin</a>
+			{% endif %}
+		</header>
+		{% endif %}
+
 		{% block content %}{% endblock %}
 	</body>
 </html>

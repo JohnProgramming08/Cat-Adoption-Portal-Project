@@ -5,16 +5,6 @@
 {% endblock %}
 
 {% block content %}
-<header>
-	<a href="/home/{{ user.id }}">Home</a>
-	<a href="/news/{{ user.id }}">News</a>
-	<a href="/cats/{{ user.id }}">View Cats</a>
-	<a>Volunteer</a>
-	{% if user.level == "admin" %}
-	<a href="/admin/{{ user.id }}">Admin</a>
-	{% endif %}
-</header>
-
 <main>
 	<form action="/new_cat/{{ user.id }}" method="post" enctype="multipart/form-data">
 		{{ form.hidden_tag() }}

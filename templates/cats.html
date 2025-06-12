@@ -7,15 +7,6 @@
 
 {% block content %}
 <div id="screen-cover" class="hidden"></div>
-<header>
-	<a href="/home/{{ user.id }}">Home</a>
-	<a href="/news/{{ user.id }}">News</a>
-	<a href="/cats/{{ user.id }}" class="selected">View Cats</a>
-	<a>Volunteer</a>
-	{% if user.level == "admin" %}
-	<a href="/admin/{{ user.id }}">Admin</a>
-	{% endif %}
-</header>
 
 {% if user.level=="admin" %}
 	<a href="/new_cat/{{ user.id }}">

@@ -1,8 +1,9 @@
 from flask import Flask, render_template, redirect, url_for, jsonify
-from forms import LoginForm, UsernameForm, NewsForm, CatForm, AdoptForm, ReviewAdoptForm
+from forms import LoginForm, UsernameForm, NewsForm, CatForm, AdoptForm, ReviewAdoptForm, VolunteerRequestForm
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import os
+import random
 
 app = Flask(__name__)
 app.secret_key = "Kitty Cat"
@@ -46,7 +47,18 @@ class AdoptionFormReview(db.Model):
 	reason = db.Column(db.String(30))
 	form_id = db.Column(db.Integer, db.ForeignKey('adoption_form.id'), unique=True, nullable=False)
 
+class VolunteerStory(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	first_name = db.Column(db.String(20), nullable=False)
+	story = db.Column(db.String(400), nullable=False)
 
+class VolunteerRequest:
+	id = db.Column(db.Integer, primary_key=True)
+	first_name = db.Column(db.String(50), nullable=False)
+	last_name = db.Column(db.String(50), nullable=False)
+	address = db.Column(db.String(50), nullable=False)
+	age = db.Column(db.Integer, nullable=False)
+	reason = db.Column(db.String(500), nullable=False)
 
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -60,7 +72,7 @@ def index():
 		found_user = User.query.filter(User.username==username, User.password==password).first()
 		# Successful
 		if form.sign_up.data and not found_username:
-			user = User(username=username, password=password, level="admin")
+			user = User(username=username, password=password, level="user")
 			db.session.add(user)
 			db.session.commit()
 			id = user.id
@@ -144,6 +156,7 @@ def get_news(id):
 	return jsonify(news_dict)
 
 
+
 @app.route('/delete_news/<int:id>')
 def delete_news(id):
 	news = News.query.filter(News.id==id).first()
@@ -221,9 +234,16 @@ def find_form(id):
 	}
 	return jsonify(form_dict)
 
+@app.route('/become_volunteer/<int:id>', methods=["GET", "POST"])
+def become_volunteer(id):
+	all_stories = VolunteerStory.query.all()
+	user = User.query.get(id)
+	num = random.randint(0, len(all_stories) - 1)
+	story = all_stories[num]
+	form = VolunteerRequestForm()
+	return render_template("become_volunteer.html", user=user, volunteer=story, form=form)
+
+
+
 if __name__ == "__main__":
-	app.run(debug=True, port=8000)
-
-
-# MAKE IT SO USERS CAN SEE THE STATUS OF FORMS IN HOME.HTML
-# BUT FIRST CHANGE ACCEPTED IN DATABASE TO STRING STATUS
+	app.run(debug=True, port=5000)
