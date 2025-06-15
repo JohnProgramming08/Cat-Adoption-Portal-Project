@@ -6,7 +6,7 @@ import os
 import random
 
 app = Flask(__name__)
-app.secret_key = "Kitty Cat"
+app.secret_key = "Kitty Cat" 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 db = SQLAlchemy(app)
 
@@ -17,6 +17,7 @@ class User(db.Model):
     level = db.Column(db.String(50), nullable=False)
     news = db.relationship('News', backref='author', lazy=True)
     forms = db.relationship('AdoptionForm', backref='user', lazy=True)
+    volunteer_request = db.relationship('VolunteerRequest', backref='user', lazy=True)
 
 class News(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,17 +53,25 @@ class VolunteerStory(db.Model):
 	first_name = db.Column(db.String(20), nullable=False)
 	story = db.Column(db.String(400), nullable=False)
 
-class VolunteerRequest:
+class VolunteerRequest(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	first_name = db.Column(db.String(50), nullable=False)
 	last_name = db.Column(db.String(50), nullable=False)
 	address = db.Column(db.String(50), nullable=False)
 	age = db.Column(db.Integer, nullable=False)
 	reason = db.Column(db.String(500), nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	review = db.relationship('VolunteerRequestReview', backref='request', uselist=False)
+
+class VolunteerRequestReview(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	status = db.Column(db.String(30), nullable=False)
+	reason = db.Column(db.String(30))
+	request_id = db.Column(db.Integer, db.ForeignKey('volunteer_request.id'), unique=True, nullable=False)
+
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-	db.create_all()
 	form = LoginForm()
 	# Log in and sign up functionality
 	if form.validate_on_submit():
@@ -72,7 +81,7 @@ def index():
 		found_user = User.query.filter(User.username==username, User.password==password).first()
 		# Successful
 		if form.sign_up.data and not found_username:
-			user = User(username=username, password=password, level="user")
+			user = User(username=username, password=password, level="admin")
 			db.session.add(user)
 			db.session.commit()
 			id = user.id
@@ -107,7 +116,6 @@ def home(id):
 			user.username = username
 			db.session.commit()
 			return redirect(url_for("home", id=user.id))
-
 	else:
 		form.username.data = user.username
 		return render_template("home.html", user=user, form=form, error="none", news=newest_news, adoptions=user_adoptions)
@@ -205,45 +213,87 @@ def admin(id):
 	review_form = ReviewAdoptForm()
 	user = User.query.get(id)
 	adoption_forms = AdoptionForm.query.all()
+	volunteer_forms = VolunteerRequest.query.all()
 	new_review = 0
-	if review_form.validate_on_submit() and review_form.accept.data:
+	if review_form.validate_on_submit() and review_form.accept.data and review_form.type.data == "cat":
 		new_review = AdoptionFormReview(status="To be delivered", form_id=review_form.form_id.data)
-	elif review_form.validate_on_submit() and review_form.decline.data:
+	elif review_form.validate_on_submit() and review_form.decline.data and review_form.type.data == "cat":
 		new_review = AdoptionFormReview(status="Declined", reason=review_form.reason.data, form_id=review_form.form_id.data)
+	elif review_form.validate_on_submit() and review_form.accept.data and review_form.type.data == "volunteer":
+		request = VolunteerRequest.query.get(review_form.form_id.data)
+		request_user = User.query.get(request.user_id)
+		request_user.level = "volunteer"
+		new_review = VolunteerRequestReview(status="Accepted", request_id=review_form.form_id.data)
+	elif review_form.validate_on_submit() and review_form.decline.data and review_form.type.data == "volunteer":
+		new_review = VolunteerRequestReview(status="Declined", request_id=review_form.form_id.data)
 	if new_review:
 		db.session.add(new_review)
 		db.session.commit()
 		return redirect(url_for("admin", id=id))
 		
-	return render_template('admin.html', forms=adoption_forms, user=user, review_form=review_form)
+	return render_template('admin.html', volunteer_forms=volunteer_forms, adoption_forms=adoption_forms, user=user, review_form=review_form)
 
 
-@app.route('/find_form/<int:id>')
-def find_form(id):
-	form = AdoptionForm.query.get(id)
-	form_dict = {
-		"id": form.id,
-		"address": form.address,
-		"other_pets": form.other_pets,
-		"reason": form.reason,
-		"cat_id": form.cat.id,
-		"cat_name": form.cat.name,
-		"cat_bio": form.cat.bio,
-		"user_id": form.user.id,
-		"username": form.user.username
-	}
+@app.route('/find_form/<int:id>/<type>')
+def find_form(id, type):
+	if type == "cat":
+		form = AdoptionForm.query.get(id)
+		form_dict = {
+			"id": form.id,
+			"address": form.address,
+			"other_pets": form.other_pets,
+			"reason": form.reason,
+			"cat_id": form.cat.id,
+			"cat_name": form.cat.name,
+			"cat_bio": form.cat.bio,
+			"user_id": form.user.id,
+			"username": form.user.username
+		}
+	else:
+		form = VolunteerRequest.query.get(id)
+		form_dict = {
+			"id": form.id,
+			"address": form.address,
+			"reason": form.reason,
+			"user_id": form.user_id,
+			"username": form.user.username,
+			"first_name": form.first_name,
+			"last_name": form.last_name,
+			"age": form.age
+		}
 	return jsonify(form_dict)
 
 @app.route('/become_volunteer/<int:id>', methods=["GET", "POST"])
 def become_volunteer(id):
+	def save_data():
+		first_name = form.first_name.data
+		last_name = form.last_name.data
+		address = form.address.data
+		age = form.age.data
+		reason = form.reason.data
+		new_request = VolunteerRequest(first_name=first_name, last_name=last_name, address=address, age=age, reason=reason, user_id=id)
+		db.session.add(new_request)
+		db.session.commit()
 	all_stories = VolunteerStory.query.all()
 	user = User.query.get(id)
 	num = random.randint(0, len(all_stories) - 1)
 	story = all_stories[num]
 	form = VolunteerRequestForm()
-	return render_template("become_volunteer.html", user=user, volunteer=story, form=form)
+	found_request = VolunteerRequest.query.filter(VolunteerRequest.user_id==id).first()
+	if form.validate_on_submit() and not found_request:
+		save_data()
+		return render_template("become_volunteer.html", user=user, volunteer=story, form=form, request=True, error="success")
+	elif form.validate_on_submit() and found_request.review:
+		if found_request.review.status == "declined":
+			save_data()
+			return render_template("become_volunteer.html", user=user, volunteer=story, form=form, request=True, error="success")
+	elif form.validate_on_submit() and found_request:
+		return render_template("become_volunteer.html", user=user, volunteer=story, form=form, request=False, error="exists")
+	return render_template("become_volunteer.html", user=user, volunteer=story, form=form, request=False, error="none")
 
 
 
 if __name__ == "__main__":
 	app.run(debug=True, port=5000)
+
+# BUILD BACKEND OF APPLICATION REVIEW  AND FINISH FRONT END TYPE FIELD AUTO FILL

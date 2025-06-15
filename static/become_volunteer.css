@@ -98,3 +98,20 @@ input[type="submit"]:hover {
 	border: 3px solid orange;
 	transition: 0.5s ease-in-out;
 }
+
+.exists input[type="text"], .exists input[type="number"], .exists textarea {
+	border: 3px solid red;
+}
+
+#exists {
+	color: red;
+	text-align: center;
+}
+
+#none, #success {
+	display: none;
+}
+
+.success {
+	border: 3px solid green;
+}

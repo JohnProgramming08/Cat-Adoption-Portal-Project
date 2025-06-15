@@ -13,8 +13,9 @@
 		<p class="story-text">{{ volunteer.first_name }} had an amazing time and really made an impact. You can too!</p>
 	</section>
 	
-	<section id="form-section">
+	<section id="form-section" class="{{ error }}">
 		<h2>Sign Up Today</h2>
+		<p id="{{ error }}">Sorry, your previous application is still being reviewed.</p>
 		<form method="post" action="/become_volunteer/{{ user.id }}">
 			{{ form.hidden_tag() }}
 			{{ form.first_name.label }}

@@ -5,11 +5,10 @@
 {% endblock %}
 
 {% block content %}
-<div id="screen-cover" class="hidden"></div>
 <main>
 	<div class="center-form" id="form-show">
 		<div id="cat-details">
-			<i class="fas fa-xmark form-cancel" id="cancel"></i>
+			<i class="fas fa-xmark form-cancel" id="cancel-cat"></i>
 			<h2>Cat Details</h2>
 			<div class="identity">
 				<h3 id="cat-id">Cat ID: </h3>
@@ -59,6 +58,8 @@
 			{% if news %}
 			<h3>{{ news.headline }}</h3>
 			<h4>- {{ news.author.username }}</h4>
+			{% else %}
+			<h3></h3><h4></h4>
 			{% endif %}
 		</div>
 		<a href="/news/{{ user.id }}" id="news-btn" class="page-link-btn">See more</a>
