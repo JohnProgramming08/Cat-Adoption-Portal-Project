@@ -17,6 +17,7 @@
 {% endif %}
 <main>
 	{% for cat in cats %}
+	{% if cat.adopted == False %}
 	<div class="cat-listing">
 		<img class="cat-img" src="{{ url_for('static', filename='images/' ~ cat.image) }}">
 		<div class="cat-text">
@@ -25,9 +26,11 @@
 			<div class="page-link-btn cat-btn" id="{{ cat.id }}">Adopt me</div>
 		</div>
 	</div>
+	{% endif %}
 	{% endfor %}
 
-	<form action="/cats/{{ user.id }}" method="post" class="hidden">
+	<form action="/cats/{{ user.id }}" method="post" class="hidden" id="{{ error }}">
+		<p id="error-msg">{% if error=="exists" %}You already have an adoption form for this cat.{% endif %}</p>
 		<i class="fas fa-xmark cancel" id="cancel"></i>
 		{{ form.hidden_tag() }}
 		<div class="hidden">{{ form.cat_id() }}</div>

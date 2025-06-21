@@ -168,19 +168,22 @@ h4 {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-evenly;
 }
 
-#adoptions-div {
+#adoptions-div, #volunteer-div {
 	width: 40vw;
-	max-height: 50%;
+	height: 40%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
 }
 
-#user-adoptions {
+#volunteer-div {
+	height: 40%;
+}
+
+#user-adoptions, #user-applications {
 	width: 90%;
 	padding: 5px;
 	max-height: 30vh;
@@ -188,7 +191,7 @@ h4 {
 	display: grid;	
 }
 
-.cat-form {
+.cat-form, .application-div {
 	padding: 5px;
 	width: 100%;
 	border-radius: 7px;
@@ -197,29 +200,30 @@ h4 {
 	justify-content: space-between;
 }
 
-.cat-form:hover {
+.cat-form:hover, .application-div:hover {
 	background-color: white;
 }
 
-.form-link {
+.form-link, .application-link {
 	text-decoration: none;
 	color: black;
 }
 
-.form-link:hover {
+.form-link:hover, .application-link:hover {
 	text-decoration: underline;
 	cursor: pointer;
 }
 
-#adoption-btn {
+#adoption-btn, #volunteer-btn {
 	width: 40%;
 	height: 7vh;
 	font-size: 1.4rem;
-	margin-top: 20px;
 	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 10px;
 }
 
-.no-adoptions {
+.no-adoptions, .not-volunteer {
 	width: 100%;
 	font-size: 1.3rem;
 	margin-bottom: 10px;
@@ -239,10 +243,18 @@ h4 {
 	display: none;
 }
 
-#cat-details *, #user-details * {
+#cat-details *, #user-details *, #application-show * {
 	text-align: center;
+}
+
+#application-show * {
+	padding: 10px;
 }
 
 #cat-details, #user-details {
 	background-color: #bbbbbb;
+}
+
+#cancel-cat, #cancel-volunteer {
+	padding: 0;
 }

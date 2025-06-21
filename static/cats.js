@@ -5,6 +5,7 @@ const screenCover = document.getElementById('screen-cover');
 const cancel = document.getElementById('cancel');
 const fields = Array.from(form.querySelectorAll('input, textarea'));
 const headerCats = document.getElementById('header-cats');
+const error = document.getElementById('error-msg');
 headerCats.classList.add('selected');
 
 adoptButtons.forEach(button => {
@@ -17,9 +18,18 @@ adoptButtons.forEach(button => {
 });
 
 cancel.addEventListener('click', () => {
+	form.id = "none";
+	error.textContent = '';
 	form.classList.add('hidden');
 	screenCover.classList.add('hidden');
 	fields.forEach(field => {
-		field.value = '';
+		if (field.type !== 'submit') {
+			field.value = '';
+		}
 	})
-})
+});
+
+if (form.id === 'exists') {
+	//error.textContent = 'You already have an adoption form for this cat.';
+	form.classList.remove('hidden');
+}

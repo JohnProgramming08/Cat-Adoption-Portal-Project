@@ -27,6 +27,17 @@
 		</div>
 	</div>
 
+	<div id="application-show" class="center-form">
+		<i class="fas fa-xmark form-cancel" id="cancel-volunteer"></i>
+		<h2>Application Details</h2>
+		<h3 id="applicant-first-name">First Name: </h3>
+		<h3 id="applicant-last-name">Last Name: </h3>
+		<h3 id="applicant-address">Address: </h3>
+		<h3 id="applicant-age">Age: </h3>
+		<h3>Reason</h3>
+		<h4 id="applicant-reason"></h4>
+	</div>
+
 	<section id="section-1">
 	<div id="profile-div" class="page-div">
 		<div id="details">
@@ -73,7 +84,7 @@
 			{% if adoptions %}
 			{% for form in adoptions|reverse %}
 			<div class="cat-form">
-				<p class="form-link" id="{{ form.id }}">{{ form.id }} -|- Cat adoption form for {{ form.cat.name }}</p>
+				<p class="form-link cat-adoption" id="{{ form.id }}">{{ form.id }} -|- Cat adoption form for {{ form.cat.name }}</p>
 				{% if form.review %}
 					{% if form.review.status=="Declined" %}
 						<p class="denied">{{ form.review.status }}</p>
@@ -86,9 +97,30 @@
 			{% else %}
 			<p class="no-adoptions">Oh no! You don't have any adoption forms.</p>
 			<p class="no-adoptions">Would you like to submit one?</p>
-			<a href="/cats/{{ user.id}}" class="page-link-btn" id="adoption-btn">See Cats!</a>
+			<a href="/cats/{{ user.id}}" class="page-link-btn" id="adoption-btn">See cats</a>
 			{% endif %}
 		</div>
+	</div>
+	
+	<div class="page-div" id="volunteer-div">
+		<h2>Volunteering Info</h2>
+		{% if user.level == "user" and applications|length == 0 %}
+		<p class="not-volunteer">Oh no! It seems you aren't a volunteer!</p>
+		<p class="not-volunteer">Our mission is made achievable by our volunteers.</p>
+		<p class="not-volunteer">Would you like to help us?</p>
+		<a href="/become_volunteer/{{ user.id }}" class="page-link-btn" id="volunteer-btn">Apply now</a>	
+		{% elif user.level == "user" and applications|length > 0 %}
+		<div id="user-applications">
+			{% for application in applications %}
+			<div class="application-div">
+				<p class="application-link" id="{{ application.id }}">{{ application.id }} -|- Application form for volunteering</p>
+				{% if application.review.status == "Declined" %}
+				<p class="denied">{{ application.review.status }}</p>
+				{% endif %}
+			</div>
+			{% endfor %}
+		</div>
+		{% endif %}
 	</div>
 	</section>
 </main>

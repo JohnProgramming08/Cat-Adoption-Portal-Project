@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, jsonify
+from flask import Flask, render_template, redirect, url_for, jsonify, request
 from forms import LoginForm, UsernameForm, NewsForm, CatForm, AdoptForm, ReviewAdoptForm, VolunteerRequestForm
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
@@ -31,6 +31,7 @@ class Cat(db.Model):
 	bio = db.Column(db.String(100), nullable=False)
 	gender = db.Column(db.String(1), nullable=False)
 	image = db.Column(db.String(100))
+	adopted = db.Column(db.Boolean, nullable=False, default=False)
 	forms = db.relationship('AdoptionForm', backref='cat', lazy=True)
 
 class AdoptionForm(db.Model):
@@ -81,7 +82,7 @@ def index():
 		found_user = User.query.filter(User.username==username, User.password==password).first()
 		# Successful
 		if form.sign_up.data and not found_username:
-			user = User(username=username, password=password, level="admin")
+			user = User(username=username, password=password, level="user")
 			db.session.add(user)
 			db.session.commit()
 			id = user.id
@@ -106,19 +107,21 @@ def home(id):
 	form = UsernameForm()
 	newest_news = News.query.order_by(News.id.desc()).first()
 	user_adoptions = AdoptionForm.query.filter(AdoptionForm.user_id==id).all()
+	user_applications = VolunteerRequest.query.filter(VolunteerRequest.user_id==id).order_by(VolunteerRequest.user_id.desc()).all()
+
 	if form.validate_on_submit():
 		username = form.username.data
 		found_user = User.query.filter(User.username==username).first()
 		if found_user and username != user.username:
 			form.username.data = user.username
-			return render_template("home.html", user=user, form=form, error="exists", news=newest_news, asoptions=user_adoptions)
+			return render_template("home.html", applications=user_applications, user=user, form=form, error="exists", news=newest_news, asoptions=user_adoptions)
 		else:
 			user.username = username
 			db.session.commit()
 			return redirect(url_for("home", id=user.id))
 	else:
 		form.username.data = user.username
-		return render_template("home.html", user=user, form=form, error="none", news=newest_news, adoptions=user_adoptions)
+		return render_template("home.html", applications=user_applications, user=user, form=form, error="none", news=newest_news, adoptions=user_adoptions)
 
 
 @app.route('/news/<int:id>', methods=["GET", "POST"])
@@ -180,6 +183,11 @@ def cats(id):
 	cats = Cat.query.all()
 	if form.validate_on_submit():
 		cat_id = form.cat_id.data
+		found_form = AdoptionForm.query.filter(AdoptionForm.user_id == id, AdoptionForm.cat_id == cat_id).order_by(AdoptionForm.id.desc()).first()
+		if found_form:
+			if not found_form.review:
+				return render_template("cats.html", user=user, cats=cats, form=form, error="exists")
+				
 		address = form.address.data
 		other_pets = form.other_pets.data
 		reason = form.reason.data
@@ -187,7 +195,7 @@ def cats(id):
 		db.session.add(adoption_form)
 		db.session.commit()
 		return redirect(url_for('cats', id=id))
-	return render_template("cats.html", user=user, cats=cats, form=form)
+	return render_template("cats.html", user=user, cats=cats, form=form, error="none")
 
 
 @app.route('/new_cat/<int:id>')
@@ -217,6 +225,13 @@ def admin(id):
 	new_review = 0
 	if review_form.validate_on_submit() and review_form.accept.data and review_form.type.data == "cat":
 		new_review = AdoptionFormReview(status="To be delivered", form_id=review_form.form_id.data)
+		cat = AdoptionForm.query.get(new_review.form_id).cat
+		cat.adopted = True
+		cat_adoption_forms = AdoptionForm.query.filter(AdoptionForm.cat_id == cat.id).all()
+		for form in cat_adoption_forms:
+			if form.id != review_form.form_id.data:
+				form_review = AdoptionFormReview(status="Declined", reason="Cat has new parents.", form_id=form.id)
+				db.session.add(form_review)
 	elif review_form.validate_on_submit() and review_form.decline.data and review_form.type.data == "cat":
 		new_review = AdoptionFormReview(status="Declined", reason=review_form.reason.data, form_id=review_form.form_id.data)
 	elif review_form.validate_on_submit() and review_form.accept.data and review_form.type.data == "volunteer":
@@ -296,4 +311,4 @@ def become_volunteer(id):
 if __name__ == "__main__":
 	app.run(debug=True, port=5000)
 
-# BUILD BACKEND OF APPLICATION REVIEW  AND FINISH FRONT END TYPE FIELD AUTO FILL
+

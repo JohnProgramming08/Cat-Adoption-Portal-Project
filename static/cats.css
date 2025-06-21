@@ -150,3 +150,15 @@ input[name="other_pets"] {
     color: red;
     cursor: pointer;
 }
+
+#exists {
+	display: flex;
+}
+
+#exists input[type="text"], #exists input[type="number"], #exists textarea {
+	border: 3px solid red;
+}
+
+#error-msg {
+	color: red;
+}
