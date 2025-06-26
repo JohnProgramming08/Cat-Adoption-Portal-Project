@@ -22,6 +22,8 @@ class CatForm(FlaskForm):
 	name = StringField("Name", validators=[DataRequired(), Length(max=25)])
 	bio = TextAreaField("Bio", validators=[DataRequired(), Length(max=100)])
 	gender = SelectField("Gender", choices=[('M', 'Male'), ('F', 'Female')], validators=[DataRequired()])
+	room = StringField("Room Number", validators=[DataRequired(), Length(max=2)])
+	age = IntegerField("Age", validators=[DataRequired(), NumberRange(min=0)])
 	image = FileField("Image")
 	submit = SubmitField("Submit")
 

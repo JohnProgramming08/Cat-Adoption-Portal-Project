@@ -18,6 +18,7 @@ class User(db.Model):
     news = db.relationship('News', backref='author', lazy=True)
     forms = db.relationship('AdoptionForm', backref='user', lazy=True)
     volunteer_request = db.relationship('VolunteerRequest', backref='user', lazy=True)
+    transport = db.relationship('CatTransport', backref='user', lazy=True)
 
 class News(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,10 +30,19 @@ class Cat(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(25), nullable=False)
 	bio = db.Column(db.String(100), nullable=False)
+	age = db.Column(db.Integer, nullable=False)
 	gender = db.Column(db.String(1), nullable=False)
 	image = db.Column(db.String(100))
+	room = db.Column(db.String(2))
 	adopted = db.Column(db.Boolean, nullable=False, default=False)
 	forms = db.relationship('AdoptionForm', backref='cat', lazy=True)
+	transport = db.relationship('CatTransport', backref='cat', lazy=True, uselist=False)
+
+class CatTransport(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	stage = db.Column(db.String(15), nullable=False)
+	cat_id = db.Column(db.Integer, db.ForeignKey('cat.id'), unique=True, nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class AdoptionForm(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -82,7 +92,7 @@ def index():
 		found_user = User.query.filter(User.username==username, User.password==password).first()
 		# Successful
 		if form.sign_up.data and not found_username:
-			user = User(username=username, password=password, level="user")
+			user = User(username=username, password=password, level="admin")
 			db.session.add(user)
 			db.session.commit()
 			id = user.id
@@ -206,10 +216,12 @@ def new_cat(id):
 		name = form.name.data
 		bio = form.bio.data
 		gender = form.gender.data
+		room = form.room.data
+		age = form.age.data
 		image = form.image.data
 		filename = secure_filename(image.filename)
 		image.save(os.path.join('static/images', filename))
-		cat = Cat(name=name, bio=bio, gender=gender, image=f'{filename}')
+		cat = Cat(name=name, bio=bio, gender=gender, room=room, age=age, image=f'{filename}')
 		db.session.add(cat)
 		db.session.commit()
 		return redirect(url_for('cats', id=id))
@@ -262,7 +274,8 @@ def find_form(id, type):
 			"cat_name": form.cat.name,
 			"cat_bio": form.cat.bio,
 			"user_id": form.user.id,
-			"username": form.user.username
+			"username": form.user.username,
+			"room": form.cat.room
 		}
 	else:
 		form = VolunteerRequest.query.get(id)
@@ -306,9 +319,40 @@ def become_volunteer(id):
 		return render_template("become_volunteer.html", user=user, volunteer=story, form=form, request=False, error="exists")
 	return render_template("become_volunteer.html", user=user, volunteer=story, form=form, request=False, error="none")
 
+@app.route('/is_volunteer/<int:id>')
+def is_volunteer(id):
+	user = User.query.get(id)
+	adoption_reviews = AdoptionFormReview.query.all()
+	return render_template("is_volunteer.html", user=user, reviews=adoption_reviews)
+	
+
+@app.route('/start_transport/<int:user_id>/<int:cat_id>')
+def start_transport(user_id, cat_id):
+	cat = Cat.query.get(cat_id)
+	if cat.transport:
+		stage = cat.transport.stage
+		dict = {
+			"transport": "exists",
+			"stage": stage
+		}
+		return jsonify(dict)
+	else:
+		cat_transport = CatTransport(stage="pickup", cat_id=cat_id, user_id=user_id)
+		db.session.add(cat_transport)
+		db.session.commit()
+		return jsonify(transport=False)
+
+	
 
 
 if __name__ == "__main__":
 	app.run(debug=True, port=5000)
 
 
+
+
+# MAKE NEXT STAGE BUTTON UPDATE THE STAGE OF THE TRANSPORT IN THE DATABASE
+# USER INTERACTIVITY WITH THE TRANSPORT
+# ALLOW VOLUNTEER TO CANCEL TRANSPORT 
+# CANT START DELIVERY THAT ANOTHER PERSON HAS STARTED
+# MUST FINISH DELIVERY BEFORE STARTING ANOTHER

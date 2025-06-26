@@ -30,6 +30,5 @@ cancel.addEventListener('click', () => {
 });
 
 if (form.id === 'exists') {
-	//error.textContent = 'You already have an adoption form for this cat.';
 	form.classList.remove('hidden');
 }

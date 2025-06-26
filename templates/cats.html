@@ -21,7 +21,7 @@
 	<div class="cat-listing">
 		<img class="cat-img" src="{{ url_for('static', filename='images/' ~ cat.image) }}">
 		<div class="cat-text">
-			<h2 class="name">{{ cat.name }} ({{ cat.gender }})</h2>
+			<h2 class="name">{{ cat.name }} ({{ cat.gender }}) ({{ cat.age }})</h2>
 			<p class="bio">{{ cat.bio }}</p>
 			<div class="page-link-btn cat-btn" id="{{ cat.id }}">Adopt me</div>
 		</div>

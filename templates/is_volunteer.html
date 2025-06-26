@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='is_volunteer.css') }}">
+{% endblock %}
+
+{% block content %}
+<main id="{{ user.id }}">
+	<section id="deliveries-section">
+		<h2>Due Deliveries</h2>
+		{% for review in reviews %}
+		<div class="cat-delivery-div">
+			<p id="{{ review.form.id }}"class="cat-delivery">Due transport for {{ review.form.cat.name }} to {{ review.form.address }}</p>
+		</div>
+		{% endfor %}
+	</section>
+
+	<section id="stages-section">
+		<h2>Current Delivery</h2>
+		<div id="cat-info">
+			<h3 id="cat-name">Name: </h3>
+			<h3 id="cat-room">Room: </h3>
+			<h3 id="cat-destination">Destination: </h3>
+		</div>
+		<button class="page-link-btn" id="start-delivery">Start Delivery</button>
+
+		<div id="pickup-stage-div" class="current-div">
+			<div class="current-div-shadow" class="hidden"></div>
+			<h3><u>Pickup Stage</u></h3>
+			<p class="stage-task">Pickup y from the following room:</p>
+			<p class="location">Rooom x</p>
+		</div>
+
+		<div id="transport-stage-div" class="current-div next-stage">
+			<div class="current-div-shadow"></div>
+			<h3><u>Transport Stage</u></h3>
+			<p class="stage-task">Take y to the following address:</p>
+			<p class="location">Z address drive</p>=
+		</div>
+	
+		<div id="confirm-delivery-stage-div" class="current-div next-stage">
+			<div class="current-div-shadow"></div>
+			<h3><u>Confirm Delivery Stage</u></h3>
+			<p class="stage-task">This must be completed by the adopter.</p>
+		</div>
+		<button class="page-link-btn" id="next-stage-btn">Next Stage</button>
+	</section>
+</main>
+
+<script src="{{ url_for('static', filename='is_volunteer.js') }}"></script>
+{% endblock %}
