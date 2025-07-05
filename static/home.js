@@ -14,6 +14,13 @@ const cancelCat = document.getElementById('cancel-cat');
 const applicationForms = Array.from(document.getElementsByClassName('application-link'));
 const applicationSection = document.getElementById('application-show');
 const cancelVolunteer = document.getElementById('cancel-volunteer');
+const acceptedAdoptions = Array.from(document.getElementsByClassName('accepted'));
+const deliverySection = document.getElementById('delivery-show');
+const cancelDelivery = document.getElementById('cancel-delivery');
+const confirmDiv = document.getElementById('confirm-div');
+const confirmHeader = document.getElementById('confirm-header');
+const yesBtn = document.getElementById('yes-btn');
+const noBtn = document.getElementById('no-btn');
 const formDisplays = [
     { element: document.getElementById('user-address'), key: 'address', foretext: 'User Address: ' },
     { element: document.getElementById('other-pets'), key: 'other_pets', foretext: 'Other Pets: ' },
@@ -32,6 +39,11 @@ const applicantDisplays = [
 	{ element: document.getElementById('applicant-reason'), key: 'reason', foretext: '' },
 	{ element: document.getElementById('applicant-age'), key: 'age', foretext: 'Age: '}
 ];
+
+const deliveryDisplays = [
+	{ element: document.getElementById('volunteer-name'), key: 'name' },
+	{ element: document.getElementById('delivery-stage'), key: 'display' }
+]
 
 editBtn.addEventListener('click', () => {
 	editBtn.classList.add('hidden');
@@ -100,4 +112,66 @@ cancelCat.addEventListener('click', () => {
 cancelVolunteer.addEventListener('click', () => {
 	applicationSection.style.display = 'none';
 	screenCover.style.display = 'none';
+});
+
+
+async function getDelivery(id) {
+	const response = await fetch(`/get_delivery/${id}`);
+	const data = await response.json();
+	return data;
+}
+
+acceptedAdoptions.forEach(adoption => {
+	adoption.addEventListener('click', e => {
+		const adoptionId = parseInt(e.target.parentElement.querySelector('.cat-adoption').id);
+		getDelivery(adoptionId).then(data => {
+			if (data['transport']) {
+				deliveryDisplays.forEach(({element, key}) => {
+					element.textContent = data[key];
+				});
+				try {
+				if (data['stage'] === 'confirm') {
+					confirmDiv.style.display = 'flex';
+					confirmHeader.style.display = 'block';
+				}
+				yesBtn.dataset.transport = data["id"];
+				noBtn.dataset.transport = data["id"];
+				deliverySection.style.display = 'flex';
+				screenCover.style.display = 'block';
+				} catch(ex) {
+					headline.textContent = ex;
+				}
+			} else {
+				return '';
+			}
+
+		});
+	});
+});
+
+cancelDelivery.addEventListener('click', e => {
+	screenCover.style.display = 'none';
+	deliverySection.style.display = 'none';
+});
+
+
+// ADD EVENT LISTNENER TO BUTTONS TO USE API
+async function confirmDelivery(button) {
+	const user_id = parseInt(document.querySelector('main').id);
+	const transport_id = parseInt(button.dataset.transport);
+	if (button.textContent === 'Yes') {
+		const response = await fetch(`/confirm_delivery/${transport_id}/${1}`);
+	} else {
+		const response = await fetch(`/confirm_delivery/${transport_id}/${0}`);
+	}
+	location.reload(true);
+}
+
+yesBtn.addEventListener('click', e => {
+	confirmDelivery(e.target);
+});
+
+noBtn.addEventListener('click', e => {
+	confirmDelivery(e.target);
 })
+

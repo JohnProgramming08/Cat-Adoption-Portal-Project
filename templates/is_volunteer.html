@@ -6,13 +6,15 @@
 {% endblock %}
 
 {% block content %}
-<main id="{{ user.id }}">
+<main id="{{ user.id }}" data-cat="{{ cat_id }}" data-transport="{{ user_transport }}" data-form="{{ form_id }}">
 	<section id="deliveries-section">
 		<h2>Due Deliveries</h2>
 		{% for review in reviews %}
+		{% if review.status != "Cat Delivered" %}
 		<div class="cat-delivery-div">
 			<p id="{{ review.form.id }}"class="cat-delivery">Due transport for {{ review.form.cat.name }} to {{ review.form.address }}</p>
 		</div>
+		{% endif %}
 		{% endfor %}
 	</section>
 
@@ -25,7 +27,7 @@
 		</div>
 		<button class="page-link-btn" id="start-delivery">Start Delivery</button>
 
-		<div id="pickup-stage-div" class="current-div">
+		<div id="pickup-stage-div" class="current-div next-stage">
 			<div class="current-div-shadow" class="hidden"></div>
 			<h3><u>Pickup Stage</u></h3>
 			<p class="stage-task">Pickup y from the following room:</p>

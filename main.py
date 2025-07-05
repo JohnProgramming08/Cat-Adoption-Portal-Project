@@ -323,17 +323,33 @@ def become_volunteer(id):
 def is_volunteer(id):
 	user = User.query.get(id)
 	adoption_reviews = AdoptionFormReview.query.all()
-	return render_template("is_volunteer.html", user=user, reviews=adoption_reviews)
+
+	for review in adoption_reviews:
+		if review.form.cat.transport and review.status != "Cat Delivered":
+			if review.form.cat.transport.user_id == id:
+				adoption_form_id = AdoptionForm.query.get(review.form.id).id
+				cat_id = review.form.cat.id
+				return render_template("is_volunteer.html", user=user, reviews=adoption_reviews, user_transport="True", cat_id=cat_id, form_id=adoption_form_id)
+
+	return render_template("is_volunteer.html", user=user, reviews=adoption_reviews, user_transport="False", cat_id=0, form_id=0)
 	
 
 @app.route('/start_transport/<int:user_id>/<int:cat_id>')
 def start_transport(user_id, cat_id):
 	cat = Cat.query.get(cat_id)
 	if cat.transport:
+		# Use proper join to access the review status
+		form = db.session.query(AdoptionForm).join(AdoptionFormReview).filter(
+			AdoptionForm.cat_id == cat.id,
+			AdoptionFormReview.status != "Declined"
+		).first()
+		
+		status = form.review.status
 		stage = cat.transport.stage
 		dict = {
 			"transport": "exists",
-			"stage": stage
+			"stage": stage,
+			"status": status
 		}
 		return jsonify(dict)
 	else:
@@ -342,17 +358,72 @@ def start_transport(user_id, cat_id):
 		db.session.commit()
 		return jsonify(transport=False)
 
-	
 
+@app.route('/next_stage/<int:user_id>/<int:cat_id>')
+def next_stage(cat_id, user_id):
+	cat = Cat.query.get(cat_id)
+	stages = ["pickup", "delivery", "confirm"]
+	transport_stage = cat.transport.stage
+	if transport_stage != "confirm":
+		next_stage = stages[stages.index(transport_stage) + 1]
+		cat.transport.stage = next_stage
+		db.session.commit()
+	return jsonify(reload=True)
+
+
+@app.route('/get_delivery/<int:id>')
+def get_delivery(id):
+	adoption_form = AdoptionForm.query.get(id)
+	transport = adoption_form.cat.transport
+	if transport:
+		user = User.query.get(transport.user_id)
+		user_volunteer = VolunteerRequest.query.filter(VolunteerRequest.user_id==user.id).order_by(VolunteerRequest.id.desc()).first()
+		try:
+			first_name = user_volunteer.first_name
+			last_name = user_volunteer.last_name
+			full_name = f"{first_name} {last_name}"
+		except:
+			full_name = user.username
+		transport_id = transport.id
+		stage = transport.stage
+		display = ""
+		if stage == "pickup":
+			display = f"{full_name} is picking up your cat right now."
+		elif stage == "delivery":
+			display = f"{full_name} is on the way right now."
+		else:
+			display = f"{full_name} has just delivered your cat."
+		dict = {
+			"id": transport_id,
+			"transport": True,
+			"name": full_name,
+			"stage": stage,
+			"display": display
+		}
+		return jsonify(dict)
+	return jsonify(transport=False)
+
+@app.route('/confirm_delivery/<int:transport_id>/<int:success>')
+def confirm_delivery(transport_id, success):
+	transport = CatTransport.query.get(transport_id)
+	
+	# Use a proper join to find the adoption form review
+	adoption_form_review = db.session.query(AdoptionFormReview).join(AdoptionForm).filter(AdoptionForm.cat_id == transport.cat_id,AdoptionFormReview.status != "Declined").first()
+	
+	if success:
+		transport.stage = "completed_delivery"
+		adoption_form_review.status = "Cat Delivered"
+	else:
+		adoption_form_review.status = "Unsuccessful: Being Delivered"
+		transport.stage = "failed_delivery"
+	
+	db.session.commit()
+	return jsonify(finished=True)
 
 if __name__ == "__main__":
 	app.run(debug=True, port=5000)
 
 
-
-
-# MAKE NEXT STAGE BUTTON UPDATE THE STAGE OF THE TRANSPORT IN THE DATABASE
-# USER INTERACTIVITY WITH THE TRANSPORT
+# ALERT THE VOLUNTEER WHEN DELIVERY HAS NOT BEEN CONFIRMED
 # ALLOW VOLUNTEER TO CANCEL TRANSPORT 
 # CANT START DELIVERY THAT ANOTHER PERSON HAS STARTED
-# MUST FINISH DELIVERY BEFORE STARTING ANOTHER
