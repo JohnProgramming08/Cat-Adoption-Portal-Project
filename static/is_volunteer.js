@@ -5,6 +5,12 @@ const catDestinationDisplay = document.getElementById('cat-destination');
 const nextStageBtn = document.getElementById('next-stage-btn');
 const startDeliveryBtn = document.getElementById('start-delivery');
 const currentDivs = Array.from(document.getElementsByClassName('current-div'));
+const cancelBtn = document.getElementById('cancel');
+const cancelStage = document.getElementById('cancel-stage');
+const yesBtn = document.getElementById('yes-btn');
+const returnBtn = document.getElementById('return-btn');
+const pageHeader = document.getElementById('header-volunteer');
+pageHeader.classList.add('selected');
 const stages = ['pickup', 'delivery', 'confirm']
 const catInfoDisplays = [
     { cat_element: catNameDisplay, key: 'cat_name', foretext: 'Name: ' },
@@ -61,6 +67,7 @@ startDeliveryBtn.addEventListener('click', e => {
 		div.querySelector('.current-div-shadow').style.display = 'flex';
 	});
 	nextStageBtn.style.display = 'flex';
+	cancelBtn.style.display = 'flex';
 
 	const user_id = parseInt(document.querySelector('main').id)
 	const cat_id = parseInt(startDeliveryBtn.dataset.cat)
@@ -162,10 +169,13 @@ async function checkTransports() {
 			}
 			if (divIndex < 2) {
 				nextStageBtn.style.display = 'flex';
+				cancelBtn.style.display = 'flex';
 			}
+			
 			const currentDiv = currentDivs[divIndex];
 			currentDiv.querySelector('.current-div-shadow').style.display = 'none';
 			currentDiv.classList.add('current-stage');
+			currentDiv.classList.remove('next-stage');
 		});
 
 		
@@ -185,5 +195,30 @@ async function checkTransports() {
 		}
 	}
 }
+
+cancelBtn.addEventListener('click', e => {
+	currentDivs.forEach(div => {
+		div.style.display = 'none';
+	});
+	cancelBtn.style.display = 'none';
+	nextStageBtn.style.display = 'none';
+	cancelStage.style.display = 'flex';
+	returnBtn.style.display = 'block';
+	yesBtn.style.display = 'block';
+});
+
+returnBtn.addEventListener('click', e => {
+	location.reload(true);
+});
+
+async function cancelTransport(transport_id) {
+	const response = await fetch(`/cancel_transport/${transport_id}`);
+	const data = await response.json();
+	location.reload(true);
+}
+
+yesBtn.addEventListener('click', e => {
+	console.log();
+});
 
 checkTransports();

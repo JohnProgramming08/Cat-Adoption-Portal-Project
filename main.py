@@ -420,10 +420,20 @@ def confirm_delivery(transport_id, success):
 	db.session.commit()
 	return jsonify(finished=True)
 
+
+@app.route('/cancel_transport/<int:transport_id>')
+def cancel_transport(transport_id):
+	transport = CatTransport.query.get(transport_id)
+	adoption_form_review = AdoptionFormReview.query.filter(AdoptionFormReview.form_id == transport.cat_id).order_by(AdoptionFormReview.id.desc()).first()
+	db.session.delete(transport)
+	adoption_form_review.status = "To be delivered"
+	db.session.commit()
+	return jsonify(cancelled=True)
+
+
 if __name__ == "__main__":
-	app.run(debug=True, port=5000)
+	app.run(debug=True, port=8000)
 
 
-# ALERT THE VOLUNTEER WHEN DELIVERY HAS NOT BEEN CONFIRMED
 # ALLOW VOLUNTEER TO CANCEL TRANSPORT 
 # CANT START DELIVERY THAT ANOTHER PERSON HAS STARTED
