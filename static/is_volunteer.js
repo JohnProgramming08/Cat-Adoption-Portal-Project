@@ -95,7 +95,7 @@ startDeliveryBtn.addEventListener('click', e => {
 			stageTask.textContent = templateText[i][0];
 			location.textContent = templateText[i][1];
 		}
-
+		document.querySelector('main').dataset.id = data['id'];
 
 	});
 
@@ -128,72 +128,72 @@ nextStageBtn.addEventListener('click', e => {
 
 
 async function checkTransports() {
-	const mainTransport = document.querySelector('main').dataset.transport;
-	if (mainTransport === "True") {
-		const formId = parseInt(document.querySelector('main').dataset.form);
-		const mainCatId = parseInt(document.querySelector('main').dataset.cat);
-		await getData(formId, "cat").then(data => {
-			catInfoDisplays.forEach(({cat_element, key, foretext}) => {
-				cat_element.dataset.value = data[key];
-				cat_element.textContent = foretext ? `${foretext} ${data[key]}` : data[key];
-			});
-			startDeliveryBtn.dataset.cat = data['cat_id'];
-		});
+    const mainTransport = document.querySelector('main').dataset.transport;
+    if (mainTransport === "True") {
+        const formId = parseInt(document.querySelector('main').dataset.form);
+        const mainCatId = parseInt(document.querySelector('main').dataset.cat);
+        await getData(formId, "cat").then(data => {
+            catInfoDisplays.forEach(({cat_element, key, foretext}) => {
+                cat_element.dataset.value = data[key];
+                cat_element.textContent = foretext ? `${foretext} ${data[key]}` : data[key];
+            });
+            startDeliveryBtn.dataset.cat = data['cat_id'];
+        });
 
-		catDeliveries.forEach(ele => {
-			ele.parentElement.classList.remove('clicked');
-			if (parseInt(ele.id) === formId) {
-				ele.parentElement.classList.add('clicked');
-				ele.parentElement.classList.remove('next-stage');
-			}
-		});
+        catDeliveries.forEach(ele => {
+            ele.parentElement.classList.remove('clicked');
+            if (parseInt(ele.id) === formId) {
+                ele.parentElement.classList.add('clicked');
+                ele.parentElement.classList.remove('next-stage');
+            }
+        });
 
-		currentDivs.forEach(div => {
-			div.style.overflow = 'hidden';
-			div.style.display = 'flex';
-			div.classList.remove('current-stage');
-			div.querySelector('.current-div-shadow').style.display = 'flex';
-		});
-		
-		const userId = parseInt(document.querySelector('main').id);
-		await startTransport(mainCatId, userId).then(data => {
-			let divIndex;
-			if (data['transport'] === 'exists' && data['status'] === 'Unsuccessful: Being Delivered') {
-				divIndex = stages.indexOf(data['stage']);
-				alert('The user has not received their cat.\nPlease cancel or fulfill the delivery.')
-			} else if (data['transport'] === 'exists') {
-				divIndex = stages.indexOf(data['stage']);
-			}
-			else {
-				divIndex = 0;
-			}
-			if (divIndex < 2) {
-				nextStageBtn.style.display = 'flex';
-				cancelBtn.style.display = 'flex';
-			}
-			
-			const currentDiv = currentDivs[divIndex];
-			currentDiv.querySelector('.current-div-shadow').style.display = 'none';
-			currentDiv.classList.add('current-stage');
-			currentDiv.classList.remove('next-stage');
-		});
+        currentDivs.forEach(div => {
+            div.style.overflow = 'hidden';
+            div.style.display = 'flex';
+            div.classList.remove('current-stage');
+            div.querySelector('.current-div-shadow').style.display = 'flex';
+        });
+        
+        const userId = parseInt(document.querySelector('main').id);
+        await startTransport(mainCatId, userId).then(data => {
+            let divIndex;
+            if (data['transport'] === 'exists' && data['status'] === 'Unsuccessful: Being Delivered') {
+                divIndex = stages.indexOf(data['stage']);
+                alert('The user has not received their cat.\nPlease cancel or fulfill the delivery.')
+            } else if (data['transport'] === 'exists') {
+                divIndex = stages.indexOf(data['stage']);
+            }
+            else {
+                divIndex = 0;
+            }
+            if (divIndex < 2) {
+                nextStageBtn.style.display = 'flex';
+                cancelBtn.style.display = 'flex';
+            }
+            
+            const currentDiv = currentDivs[divIndex];
+            currentDiv.querySelector('.current-div-shadow').style.display = 'none';
+            currentDiv.classList.add('current-stage');
+            currentDiv.classList.remove('next-stage');
+            
+            // Move the template text logic inside the promise
+            const catLocation = catRoomDisplay.dataset.value;
+            const catName = catNameDisplay.dataset.value;
+            const catDestination = catDestinationDisplay.dataset.value;
+            const templateText = [[`Pickup ${catName} from the following room:`, catLocation],
+            [`Take ${catName} to the following address:`, catDestination]];
 
-		
-
-		const catLocation = catRoomDisplay.dataset.value;
-		const catName = catNameDisplay.dataset.value;
-		const catDestination = catDestinationDisplay.dataset.value;
-		const templateText = [[`Pickup ${catName} from the following room:`, catLocation],
-		[`Take ${catName} to the following address:`, catDestination]];
-
-		for (let i = 0; i < 2; i++) {
-			const highlightDiv = currentDivs[i];
-			const stageTask = highlightDiv.querySelector('.stage-task');
-			const location = highlightDiv.querySelector('.location');
-			stageTask.textContent = templateText[i][0];
-			location.textContent = templateText[i][1];
-		}
-	}
+            for (let i = 0; i < 2; i++) {
+                const highlightDiv = currentDivs[i];
+                const stageTask = highlightDiv.querySelector('.stage-task');
+                const location = highlightDiv.querySelector('.location');
+                stageTask.textContent = templateText[i][0];
+                location.textContent = templateText[i][1];
+            }
+			document.querySelector('main').dataset.id = data['id'];
+        });
+    }
 }
 
 cancelBtn.addEventListener('click', e => {
@@ -218,7 +218,8 @@ async function cancelTransport(transport_id) {
 }
 
 yesBtn.addEventListener('click', e => {
-	console.log();
+	const transportId = document.querySelector('main').dataset.id;
+	cancelTransport(transportId);
 });
 
 checkTransports();

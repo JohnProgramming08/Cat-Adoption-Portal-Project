@@ -92,7 +92,7 @@ def index():
 		found_user = User.query.filter(User.username==username, User.password==password).first()
 		# Successful
 		if form.sign_up.data and not found_username:
-			user = User(username=username, password=password, level="admin")
+			user = User(username=username, password=password, level="user")
 			db.session.add(user)
 			db.session.commit()
 			id = user.id
@@ -330,6 +330,8 @@ def is_volunteer(id):
 				adoption_form_id = AdoptionForm.query.get(review.form.id).id
 				cat_id = review.form.cat.id
 				return render_template("is_volunteer.html", user=user, reviews=adoption_reviews, user_transport="True", cat_id=cat_id, form_id=adoption_form_id)
+			adoption_reviews.pop(adoption_reviews.index(review))
+
 
 	return render_template("is_volunteer.html", user=user, reviews=adoption_reviews, user_transport="False", cat_id=0, form_id=0)
 	
@@ -344,19 +346,26 @@ def start_transport(user_id, cat_id):
 			AdoptionFormReview.status != "Declined"
 		).first()
 		
+		transport_id = cat.transport.id
 		status = form.review.status
 		stage = cat.transport.stage
 		dict = {
 			"transport": "exists",
 			"stage": stage,
-			"status": status
+			"status": status,
+			"id": transport_id
 		}
 		return jsonify(dict)
 	else:
 		cat_transport = CatTransport(stage="pickup", cat_id=cat_id, user_id=user_id)
 		db.session.add(cat_transport)
 		db.session.commit()
-		return jsonify(transport=False)
+		transport_id = cat_transport.id
+		dict = {
+			"transport": False,
+			"id": transport_id
+		}
+		return jsonify(dict)
 
 
 @app.route('/next_stage/<int:user_id>/<int:cat_id>')
@@ -424,7 +433,12 @@ def confirm_delivery(transport_id, success):
 @app.route('/cancel_transport/<int:transport_id>')
 def cancel_transport(transport_id):
 	transport = CatTransport.query.get(transport_id)
-	adoption_form_review = AdoptionFormReview.query.filter(AdoptionFormReview.form_id == transport.cat_id).order_by(AdoptionFormReview.id.desc()).first()
+	
+	file = open("temp.txt", "w")
+	file.write(transport.stage)
+	file.close()
+
+	adoption_form_review = db.session.query(AdoptionFormReview).join(AdoptionForm).filter(AdoptionForm.cat_id == transport.cat_id).order_by(AdoptionFormReview.id.desc()).first()
 	db.session.delete(transport)
 	adoption_form_review.status = "To be delivered"
 	db.session.commit()
@@ -435,5 +449,4 @@ if __name__ == "__main__":
 	app.run(debug=True, port=8000)
 
 
-# ALLOW VOLUNTEER TO CANCEL TRANSPORT 
-# CANT START DELIVERY THAT ANOTHER PERSON HAS STARTED
+
