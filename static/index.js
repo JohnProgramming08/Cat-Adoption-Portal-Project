@@ -1,3 +1,4 @@
+// Display an error message if the wrong details are entered
 const wrongDetails = document.getElementsByClassName('wrong-details');
 const existingUsername = document.getElementsByClassName('existing-username');
 const errorMessage = document.getElementById('error');

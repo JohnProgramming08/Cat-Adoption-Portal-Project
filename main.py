@@ -1,86 +1,18 @@
-from flask import Flask, render_template, redirect, url_for, jsonify, request
+from db_management import db, User, News, Cat, CatTransport, AdoptionForm, AdoptionFormReview, VolunteerStory, VolunteerRequest, VolunteerRequestReview
+from flask import Flask, render_template, redirect, url_for, jsonify
 from forms import LoginForm, UsernameForm, NewsForm, CatForm, AdoptForm, ReviewAdoptForm, VolunteerRequestForm
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import os
 import random
 
+# Initial setup (boilerplate)
 app = Flask(__name__)
 app.secret_key = "Kitty Cat" 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
-db = SQLAlchemy(app)
+db.init_app(app)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(50), nullable=False)
-    level = db.Column(db.String(50), nullable=False)
-    news = db.relationship('News', backref='author', lazy=True)
-    forms = db.relationship('AdoptionForm', backref='user', lazy=True)
-    volunteer_request = db.relationship('VolunteerRequest', backref='user', lazy=True)
-    transport = db.relationship('CatTransport', backref='user', lazy=True)
-
-class News(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    headline = db.Column(db.String(50), nullable=False, unique=True)
-    description = db.Column(db.String(250), nullable=False, unique=True)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-class Cat(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(25), nullable=False)
-	bio = db.Column(db.String(100), nullable=False)
-	age = db.Column(db.Integer, nullable=False)
-	gender = db.Column(db.String(1), nullable=False)
-	image = db.Column(db.String(100))
-	room = db.Column(db.String(2))
-	adopted = db.Column(db.Boolean, nullable=False, default=False)
-	forms = db.relationship('AdoptionForm', backref='cat', lazy=True)
-	transport = db.relationship('CatTransport', backref='cat', lazy=True, uselist=False)
-
-class CatTransport(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	stage = db.Column(db.String(15), nullable=False)
-	cat_id = db.Column(db.Integer, db.ForeignKey('cat.id'), unique=True, nullable=False)
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-class AdoptionForm(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	address = db.Column(db.String(30), nullable=False)
-	other_pets = db.Column(db.Integer, nullable=False)
-	reason = db.Column(db.String(100), nullable=False)
-	cat_id = db.Column(db.Integer, db.ForeignKey('cat.id'), nullable=False)
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-	review = db.relationship('AdoptionFormReview', backref='form', uselist=False)
-
-class AdoptionFormReview(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	status = db.Column(db.String(30), nullable=False)
-	reason = db.Column(db.String(30))
-	form_id = db.Column(db.Integer, db.ForeignKey('adoption_form.id'), unique=True, nullable=False)
-
-class VolunteerStory(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	first_name = db.Column(db.String(20), nullable=False)
-	story = db.Column(db.String(400), nullable=False)
-
-class VolunteerRequest(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	first_name = db.Column(db.String(50), nullable=False)
-	last_name = db.Column(db.String(50), nullable=False)
-	address = db.Column(db.String(50), nullable=False)
-	age = db.Column(db.Integer, nullable=False)
-	reason = db.Column(db.String(500), nullable=False)
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-	review = db.relationship('VolunteerRequestReview', backref='request', uselist=False)
-
-class VolunteerRequestReview(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	status = db.Column(db.String(30), nullable=False)
-	reason = db.Column(db.String(30))
-	request_id = db.Column(db.Integer, db.ForeignKey('volunteer_request.id'), unique=True, nullable=False)
-
-
+# Initial sign up / log in page
 @app.route('/', methods=["GET", "POST"])
 def index():
 	form = LoginForm()
@@ -90,23 +22,25 @@ def index():
 		password = form.password.data
 		found_username = User.query.filter(User.username==username).first()
 		found_user = User.query.filter(User.username==username, User.password==password).first()
-		# Successful
+		# Successful signup
 		if form.sign_up.data and not found_username:
 			user = User(username=username, password=password, level="user")
 			db.session.add(user)
 			db.session.commit()
 			id = user.id
 			return redirect(url_for('home', id=id))
+		# Successful login
 		elif form.login.data and found_user:
 			id = found_user.id
 			return redirect(url_for('home', id=id))
 		
-		# Unsuccessful
+		# Unsuccessful login / signup
 		elif form.login.data:
 			return render_template('index.html', form=form, attempt="wrong-details")
 		elif form.sign_up.data:
 			return render_template('index.html', form=form, attempt="existing-username")
 		return redirect(url_for('index'))
+
 	return render_template('index.html', form=form, attempt="none")
 
 

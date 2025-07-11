@@ -1,3 +1,4 @@
+/* Global Styles */
 * {
 	margin: 0;
 	padding: 0;
@@ -11,16 +12,11 @@ html, body {
     font-size: 16px;
 }
 
-#error {
-	color: #884444;
-	padding: 10px;
+.hidden {
+	display: none;
 }
 
-.selected {
-	height: 100%;
-	background-color: whitesmoke;
-}
-
+/* Header Styles */
 header {
 	width: 100%;
 	height: 10%;
@@ -42,6 +38,7 @@ header a {
 	color: black;
 }
 
+/* Orange expanding underline */
 header a::after {
 	content: "";
 	position: absolute;
@@ -61,49 +58,13 @@ header a:hover {
 	cursor: pointer;
 }
 
-.page-link-btn {
-    color: white;
-    background: linear-gradient(90deg, #ff9900 50%, #9999ff 50%);
-    background-size: 200% 100%;
-    background-position: right;
-    transition: background-position 0.3s ease;
-    border-radius: 10px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-decoration: none;
+.selected {
+	height: 100%;
+	background-color: whitesmoke;
 }
 
-.page-link-btn:hover {
-    background-position: left;
-    cursor: pointer;
-}
 
-#new-btn {
-    font-size: 2rem;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: greenyellow;
-    color: white;
-    border: solid 2px green;
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 7;
-}
-
-#new-btn:hover {
-    cursor: pointer;
-    background-color: green;
-    border: solid 2px greenyellow;
-}
-
-.hidden {
-	display: none;
-}
-
+/* Global Form Styles */
 #screen-cover {
     width: 100%;
     height: 100%;
@@ -148,6 +109,53 @@ header a:hover {
     cursor: pointer;
 }
 
+/* Sliding Button Styles */
+.page-link-btn {
+    color: white;
+    background: linear-gradient(90deg, #ff9900 50%, #9999ff 50%);
+    background-size: 200% 100%;
+    background-position: right;
+    transition: background-position 0.3s ease;
+    border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+}
+
+.page-link-btn:hover {
+    background-position: left;
+    cursor: pointer;
+}
+
+#error {
+	color: #884444;
+	padding: 10px;
+}
+
+/* + Button Styles */
+#new-btn {
+    font-size: 2rem;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: greenyellow;
+    color: white;
+    border: solid 2px green;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 7;
+}
+
+#new-btn:hover {
+    cursor: pointer;
+    background-color: green;
+    border: solid 2px greenyellow;
+}
+
+/* Cat / User List Styles */
 #cat-details, #user-details {
 	display: flex;
 	flex-direction: column;
