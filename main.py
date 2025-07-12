@@ -43,10 +43,10 @@ def index():
 
 	return render_template('index.html', form=form, attempt="none")
 
-
+# Home page
 @app.route('/home/<int:id>', methods=["GET", "POST"])
 def home(id):
-	# Account details
+	# Get all info to be displayed to the user
 	user = User.query.filter(User.id==id).first()
 	form = UsernameForm()
 	newest_news = News.query.order_by(News.id.desc()).first()
@@ -54,13 +54,15 @@ def home(id):
 	user_applications = VolunteerRequest.query.filter(VolunteerRequest.user_id==id).order_by(VolunteerRequest.user_id.desc()).all()
 
 	if form.validate_on_submit():
-		username = form.username.data
-		found_user = User.query.filter(User.username==username).first()
-		if found_user and username != user.username:
+		form_username = form.username.data
+		found_user = User.query.filter(User.username==form_username).first()
+		# Someone already has that username
+		if found_user and form_username != user.username:
 			form.username.data = user.username
 			return render_template("home.html", applications=user_applications, user=user, form=form, error="exists", news=newest_news, asoptions=user_adoptions)
+		# Successful username change
 		else:
-			user.username = username
+			user.username = form_username
 			db.session.commit()
 			return redirect(url_for("home", id=user.id))
 	else:
