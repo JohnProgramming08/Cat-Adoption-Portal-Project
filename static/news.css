@@ -1,3 +1,4 @@
+/* Global Styles */
 body {
     overflow-x: hidden;
 }
@@ -9,6 +10,65 @@ main {
     overflow-y: auto;
 }
 
+/* Heading / Text Styles */
+h2 {
+    font-size: 2rem;
+    margin-bottom: 4px;
+}
+
+p {
+	overflow: auto;
+    margin-top: 12px;
+}
+
+/* Input Styles */
+/* News Form */
+input, textarea {
+	width: 50%;
+    font-size: 1.3rem;
+    padding: 5px;
+	border: none;
+    border-bottom: 3px solid orange;
+    transition: 0.5s ease-in-out;
+    margin-bottom: 30px;
+    margin-top: 5px;
+    resize: none;
+}
+
+textarea {
+    height: 25vh;
+    width: 65%;
+}
+
+input[type="text"]:focus, textarea:focus {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+input[type="submit"] {
+	background-color: #9999ff;
+	color: white;
+	border: 3px solid transparent;
+	transition: 0.3s ease-in-out;
+	border-radius: 10px;
+	width: auto;
+    margin-bottom: none;
+    font-size: 2rem;
+    padding: 15px;
+}
+
+/* Erroneous previous input */
+.exists input, .exists textarea {
+    border: 2px solid red;
+}
+
+input[type="submit"]:hover {
+	cursor: pointer;
+	border: 3px solid orange;
+	transition: 0.5s ease-in-out;
+}
+
+/* News Display Styles */
 .news-div {
     position: relative;
     border-radius: 10px;
@@ -19,6 +79,12 @@ main {
     display: flex;
 }
 
+.news-div * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Orange sliding border animation */
 .news-div::after {
     content: "";
     position: absolute;
@@ -35,21 +101,6 @@ main {
 
 .news-div:hover::after {
     width: 100%;
-}
-
-.news-div * {
-    position: relative;
-    z-index: 2;
-}
-
-h2 {
-    font-size: 2rem;
-    margin-bottom: 4px;
-}
-
-p {
-	overflow: auto;
-    margin-top: 12px;
 }
 
 .content {
@@ -85,6 +136,7 @@ p {
     background-color: #ff5555;
 }
 
+/* News Form Styles */
 form {
     position: fixed;
     top: 50%;
@@ -104,48 +156,11 @@ form {
     border: 2px solid orange;
 }
 
-input, textarea {
-	width: 50%;
-    font-size: 1.3rem;
-    padding: 5px;
-	border: none;
-    border-bottom: 3px solid orange;
-    transition: 0.5s ease-in-out;
-    margin-bottom: 30px;
-    margin-top: 5px;
-    resize: none;
-}
-
-textarea {
-    height: 25vh;
-    width: 65%;
-}
-
-input[type="text"]:focus, textarea:focus {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-}
-
-input[type="submit"] {
-	background-color: #9999ff;
-	color: white;
-	border: 3px solid transparent;
-	transition: 0.3s ease-in-out;
-	border-radius: 10px;
-	width: auto;
-    margin-bottom: none;
-    font-size: 2rem;
-    padding: 15px;
-}
-
-input[type="submit"]:hover {
-	cursor: pointer;
-	border: 3px solid orange;
-	transition: 0.5s ease-in-out;
-}
-
-.hidden {
-    display: none;
+form div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #cancel {
@@ -161,16 +176,5 @@ input[type="submit"]:hover {
     transform: scale(1.5, 1.5);
     color: red;
     cursor: pointer;
-}
-
-.exists input, .exists textarea {
-    border: 2px solid red;
-}
-
-form div {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 

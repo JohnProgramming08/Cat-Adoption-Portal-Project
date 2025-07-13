@@ -6,6 +6,7 @@
 
 {% block content %}
 <main>
+	<!-- Adoption Form Info -->
 	<div class="center-form" id="form-show">
 		<div id="cat-details">
 			<i class="fas fa-xmark form-cancel" id="cancel-cat"></i>
@@ -27,6 +28,7 @@
 		</div>
 	</div>
 
+	<!-- Volunteer Application Info -->
 	<div id="application-show" class="center-form">
 		<i class="fas fa-xmark form-cancel" id="cancel-volunteer"></i>
 		<h2>Application Details</h2>
@@ -38,6 +40,7 @@
 		<h4 id="applicant-reason"></h4>
 	</div>
 
+	<!-- Cat Delivery Info -->
 	<div class="center-form" id="delivery-show">
 		<i class="fas fa-xmark form-cancel" id="cancel-delivery"></i>
 		<h2>Delivery Details</h2>
@@ -54,14 +57,16 @@
 	</div>
 
 	<section id="section-1">
+	<!-- Account Details -->
 	<div id="profile-div" class="page-div">
 		<div id="details">
-			<!-- Account Details -->
 			<h2>Your Account!</h2>
 			<p id="error" class="{{ error }}"></p>
 			<div id="username-div">
 				<p class="account-detail" id="username-show">Username: {{ user.username }}</p>
 				<i class="fas fa-pen-to-square account-detail" id="edit"></i>
+
+				<!-- Form to change username -->
 				<form action="/home/{{ user.id }}" method="post" class="hidden" id="username-form">
 					{{ form.hidden_tag() }}
 					<p class="account-detail {{ error }}">
@@ -78,6 +83,7 @@
 		</div>
 	</div>
 
+	<!-- Most Recent News -->
 	<div id="news-div" class="page-div">
 		<h2>Recent News</h2>
 		<div id="newest-news">
@@ -93,9 +99,11 @@
 	</section>
 
 	<section id="section-2">
+	<!-- Cat Adoption Form List -->
 	<div id="adoptions-div" class="page-div">
 		<h2>Your Adoption Forms</h2>
 		<div id="user-adoptions">
+			<!-- Create a list of all user adoption forms -->
 			{% if adoptions %}
 			{% for form in adoptions|reverse %}
 			<div class="cat-form">
@@ -109,6 +117,8 @@
 				{% endif %}
 			</div>
 			{% endfor %}
+
+			<!-- User has no adoption forms -->
 			{% else %}
 			<p class="no-adoptions">Oh no! You don't have any adoption forms.</p>
 			<p class="no-adoptions">Would you like to submit one?</p>
@@ -117,13 +127,17 @@
 		</div>
 	</div>
 	
+	<!-- Volunteer Application List -->
 	<div class="page-div" id="volunteer-div">
 		<h2>Volunteering Info</h2>
+		<!-- User has not applied to be a volunteer -->
 		{% if user.level == "user" and applications|length == 0 %}
 		<p class="not-volunteer">Oh no! It seems you aren't a volunteer!</p>
 		<p class="not-volunteer">Our mission is made achievable by our volunteers.</p>
 		<p class="not-volunteer">Would you like to help us?</p>
-		<a href="/become_volunteer/{{ user.id }}" class="page-link-btn" id="volunteer-btn">Apply now</a>	
+		<a href="/become_volunteer/{{ user.id }}" class="page-link-btn" id="volunteer-btn">Apply now</a>
+		
+		<!-- Display a list of all user applications -->
 		{% elif user.level == "user" and applications|length > 0 %}
 		<div id="user-applications">
 			{% for application in applications %}

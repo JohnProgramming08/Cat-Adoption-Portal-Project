@@ -9,6 +9,7 @@
 <div id="screen-cover" class="hidden"></div>
 
 <main>
+	<!-- News Form -->
 	<form action="/news/{{ user.id }}" method="post" id="form" class="hidden">
 		{{ form.hidden_tag() }}
 		<i class="fas fa-xmark cancel" id="cancel"></i>
@@ -27,6 +28,7 @@
 	</div>
 	{% endif %}
 
+	<!-- Display all news from newest to oldest -->
 	{% for i in news|reverse %}
 	<div class="news-div">
 		<div class="content">

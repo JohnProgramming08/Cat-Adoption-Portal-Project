@@ -69,13 +69,15 @@ def home(id):
 		form.username.data = user.username
 		return render_template("home.html", applications=user_applications, user=user, form=form, error="none", news=newest_news, adoptions=user_adoptions)
 
-
+# News page
 @app.route('/news/<int:id>', methods=["GET", "POST"])
 def news(id):
 	user = User.query.filter(User.id==id).first()
 	news = News.query.all()
 	form = NewsForm()
+	# Create a new news article
 	if form.validate_on_submit():
+		# Get all of the news data 
 		headline = form.headline.data
 		description = form.description.data
 		news_id = form.id.data
@@ -83,21 +85,22 @@ def news(id):
 		existing_headline = News.query.filter(News.headline==headline).first()
 		existing_description = News.query.filter(News.description==description).first()
 
-		if found_news and not existing_description and not existing_headline: # EDITING NEWS
+		# Edit an existing news article 
+		if found_news and not existing_description and not existing_headline:
 			found_news.headline = headline
 			found_news.description = description
 			found_news.author_id = id
 			db.session.commit()
+		# Create a new news article
 		elif not existing_description and not existing_headline:
 			new_news = News(headline=headline, description=description, author_id=id)
 			db.session.add(new_news)
 			db.session.commit()
+		# News article with the given headline already exists
 		else:
 			return render_template("news.html", user=user, form=form, news=news, error="exists")
 
 		return redirect(url_for("news", id=id))
-			
-
 	return render_template("news.html", user=user, form=form, news=news, error="none")
 
 

@@ -1,23 +1,27 @@
+const headerNews = document.getElementById('header-news');
+headerNews.classList.add('selected');
+// News display elements
 const editBtns = Array.from(document.getElementsByClassName('edit-btn'));
+const newBtn = document.getElementById('new-btn');
+const deleteBtns = Array.from(document.getElementsByClassName('delete-btn'));
+
+// Form display elements
 const form = document.getElementById('form');
 const idEntry = document.getElementsByName('id')[0];
 const headlineEntry = document.getElementsByName('headline')[0];
 const descriptionEntry = document.getElementsByName('description')[0];
 const screenCover = document.getElementById('screen-cover');
 const cancelBtn = document.getElementById('cancel');
-const newBtn = document.getElementById('new-btn');
-const deleteBtns = Array.from(document.getElementsByClassName('delete-btn'));
 const error = document.getElementById('error');
-const headerNews = document.getElementById('header-news');
-headerNews.classList.add('selected');
 
-
+// News display section
 async function getNews(id) {
 	const response = await fetch(`/get_news/${id}`);
 	const data = await response.json();
 	return data;
 }
 
+//  Add the news info to the input fields
 editBtns.forEach((btn) => {
 	btn.addEventListener('click', (e) => {
 		getNews(e.target.id).then(data => {
@@ -30,11 +34,7 @@ editBtns.forEach((btn) => {
 	});
 });
 
-cancelBtn.addEventListener('click', () => {
-	form.classList.add('hidden');
-	screenCover.classList.add('hidden');
-});
-
+// Display a form for creating a new article
 newBtn.addEventListener('click', () => {
 	form.classList.remove('hidden');
 	screenCover.classList.remove('hidden');
@@ -52,6 +52,12 @@ deleteBtns.forEach(btn => {
 	btn.addEventListener('click', e => {
 		deleteNews(e.target.id);
 	});
+});
+
+// News form section
+cancelBtn.addEventListener('click', () => {
+	form.classList.add('hidden');
+	screenCover.classList.add('hidden');
 });
 
 if (error.classList.contains('exists')) {
