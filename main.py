@@ -103,7 +103,7 @@ def news(id):
 		return redirect(url_for("news", id=id))
 	return render_template("news.html", user=user, form=form, news=news, error="none")
 
-
+# Return news info of the given news id
 @app.route('/get_news/<int:id>')
 def get_news(id):
 	news = News.query.filter(News.id==id).first()
@@ -115,8 +115,7 @@ def get_news(id):
 	}
 	return jsonify(news_dict)
 
-
-
+# Delete the news from the database with the given news id
 @app.route('/delete_news/<int:id>')
 def delete_news(id):
 	news = News.query.filter(News.id==id).first()
@@ -124,7 +123,7 @@ def delete_news(id):
 	db.session.commit()
 	return "Deleted"
 
-
+# Cats page
 @app.route('/cats/<int:id>', methods=["GET", "POST"])
 def cats(id):
 	user = User.query.get(id)
@@ -133,10 +132,12 @@ def cats(id):
 	if form.validate_on_submit():
 		cat_id = form.cat_id.data
 		found_form = AdoptionForm.query.filter(AdoptionForm.user_id == id, AdoptionForm.cat_id == cat_id).order_by(AdoptionForm.id.desc()).first()
+		# Someone has submitted a form to adopt the cat before
 		if found_form:
 			if not found_form.review:
 				return render_template("cats.html", user=user, cats=cats, form=form, error="exists")
-				
+		
+		# Successful adoption form
 		address = form.address.data
 		other_pets = form.other_pets.data
 		reason = form.reason.data

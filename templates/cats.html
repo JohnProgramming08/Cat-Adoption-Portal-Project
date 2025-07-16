@@ -15,7 +15,9 @@
 		</div>
 	</a>
 {% endif %}
+
 <main>
+	<!-- Display all cats that haven't been adopted -->
 	{% for cat in cats %}
 	{% if cat.adopted == False %}
 	<div class="cat-listing">
@@ -28,7 +30,8 @@
 	</div>
 	{% endif %}
 	{% endfor %}
-
+	
+	<!-- Cat Adoption Form -->
 	<form action="/cats/{{ user.id }}" method="post" class="hidden" id="{{ error }}">
 		<p id="error-msg">{% if error=="exists" %}You already have an adoption form for this cat.{% endif %}</p>
 		<i class="fas fa-xmark cancel" id="cancel"></i>

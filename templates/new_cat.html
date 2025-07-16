@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<!-- New Cat Listing Form -->
 <main>
 	<form action="/new_cat/{{ user.id }}" method="post" enctype="multipart/form-data">
 		{{ form.hidden_tag() }}
