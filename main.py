@@ -14,6 +14,7 @@ db.init_app(app)
 
 # Initial sign up / log in page
 @app.route('/', methods=["GET", "POST"])
+
 def index():
 	form = LoginForm()
 	# Log in and sign up functionality
@@ -133,9 +134,8 @@ def cats(id):
 		cat_id = form.cat_id.data
 		found_form = AdoptionForm.query.filter(AdoptionForm.user_id == id, AdoptionForm.cat_id == cat_id).order_by(AdoptionForm.id.desc()).first()
 		# Someone has submitted a form to adopt the cat before
-		if found_form:
-			if not found_form.review:
-				return render_template("cats.html", user=user, cats=cats, form=form, error="exists")
+		if found_form and not getattr(found_form, 'review', None):
+			return render_template("cats.html", user=user, cats=cats, form=form, error="exists")
 		
 		# Successful adoption form
 		address = form.address.data
@@ -147,12 +147,13 @@ def cats(id):
 		return redirect(url_for('cats', id=id))
 	return render_template("cats.html", user=user, cats=cats, form=form, error="none")
 
-
+# Add a new cat to the database
 @app.route('/new_cat/<int:id>')
 def new_cat(id):
 	form = CatForm()
 	user = User.query.get(id)
 	if form.validate_on_submit():
+		# Get data from the form
 		name = form.name.data
 		bio = form.bio.data
 		gender = form.gender.data
@@ -160,6 +161,8 @@ def new_cat(id):
 		age = form.age.data
 		image = form.image.data
 		filename = secure_filename(image.filename)
+
+		# Add the cat to the database and save the image
 		image.save(os.path.join('static/images', filename))
 		cat = Cat(name=name, bio=bio, gender=gender, room=room, age=age, image=f'{filename}')
 		db.session.add(cat)
@@ -167,30 +170,41 @@ def new_cat(id):
 		return redirect(url_for('cats', id=id))
 	return render_template("new_cat.html", form=form, user=user)
 
+# Reject any other adoption forms for that cat
+def reject_adoption_forms(forms, review_form):
+	for form in forms:
+		if form.id != review_form.form_id.data:
+			form_review = AdoptionFormReview(status="Declined", reason="Cat has new parents.", form_id=form.id)
+			db.session.add(form_review)
 
+# Admin page
 @app.route('/admin/<int:id>', methods=["GET", "POST"])
 def admin(id):
+	# Get all data needed for admin tasks
 	review_form = ReviewAdoptForm()
 	user = User.query.get(id)
 	adoption_forms = AdoptionForm.query.all()
 	volunteer_forms = VolunteerRequest.query.all()
 	new_review = 0
+
+	# Cat adoption form has been accepted
 	if review_form.validate_on_submit() and review_form.accept.data and review_form.type.data == "cat":
 		new_review = AdoptionFormReview(status="To be delivered", form_id=review_form.form_id.data)
 		cat = AdoptionForm.query.get(new_review.form_id).cat
 		cat.adopted = True
 		cat_adoption_forms = AdoptionForm.query.filter(AdoptionForm.cat_id == cat.id).all()
-		for form in cat_adoption_forms:
-			if form.id != review_form.form_id.data:
-				form_review = AdoptionFormReview(status="Declined", reason="Cat has new parents.", form_id=form.id)
-				db.session.add(form_review)
+		reject_adoption_forms(cat_adoption_forms, review_form)
+	# Cat adoption form has been denied
 	elif review_form.validate_on_submit() and review_form.decline.data and review_form.type.data == "cat":
 		new_review = AdoptionFormReview(status="Declined", reason=review_form.reason.data, form_id=review_form.form_id.data)
+	
+	# Volunteer application form has been accepted
 	elif review_form.validate_on_submit() and review_form.accept.data and review_form.type.data == "volunteer":
 		request = VolunteerRequest.query.get(review_form.form_id.data)
 		request_user = User.query.get(request.user_id)
 		request_user.level = "volunteer"
 		new_review = VolunteerRequestReview(status="Accepted", request_id=review_form.form_id.data)
+	# Volunteer application form has not been accepted
 	elif review_form.validate_on_submit() and review_form.decline.data and review_form.type.data == "volunteer":
 		new_review = VolunteerRequestReview(status="Declined", request_id=review_form.form_id.data)
 	if new_review:
@@ -200,7 +214,7 @@ def admin(id):
 		
 	return render_template('admin.html', volunteer_forms=volunteer_forms, adoption_forms=adoption_forms, user=user, review_form=review_form)
 
-
+# Find the form of the given type using the given ID
 @app.route('/find_form/<int:id>/<type>')
 def find_form(id, type):
 	if type == "cat":
@@ -387,6 +401,3 @@ def cancel_transport(transport_id):
 
 if __name__ == "__main__":
 	app.run(debug=True, port=8000)
-
-
-

@@ -9,8 +9,10 @@
 <div id="screen-cover" class="hidden"></div>
 
 <main>
+	<!-- Form Review -->
 	<section id="form-review-section" class="center-form hidden">
 		<div id="original-form">
+			<!-- Only for adoption forms -->
 			<div id="cat-details">
 				<h2>Cat Details</h2>
 				<div class="identity">
@@ -33,6 +35,7 @@
 				<p id="reason"></p>
 			</div>
 
+			<!-- Only for volunteer forms -->
 			<div id="volunteer-details">
 				<h2>Volunteer Form Details</h2>
 				<div class="identity">
@@ -49,6 +52,7 @@
 				<p id="volunteer-reason"></p>
 			</div>
 		</div>
+
 		<form action="/admin/{{ user.id }}" method="post">
 			{{ review_form.hidden_tag() }}
 			{{ review_form.type() }}
@@ -60,7 +64,7 @@
 		</form>
 		<i class="fas fa-xmark form-cancel"></i>
 	</section>
-	
+	<!-- Show all of the non-reviewed adoption forms -->
 	<section id="cat-form-section">
 		<h2>Cat Adoption Forms</h2>
 		{% for form in adoption_forms %}
@@ -74,6 +78,7 @@
 		{% endfor %}
 	</section>
 
+	<!-- Show all of the non-reviewed volunteer forms -->
 	<section id="volunteer-form-section">
 		<h2>Volunteer Application Forms</h2>
 		{% for form in volunteer_forms %}
