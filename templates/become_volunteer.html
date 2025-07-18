@@ -6,13 +6,15 @@
 
 {% block content %}
 <main>
+	<!-- Volunteer Story Section -->
 	<section id="volunteer-story">
 		<h2>{{ volunteer.first_name }}'s Volunteer Story</h2>
 		<img id="volunteer-img" src="{{ url_for('static', filename='images/volunteer.jpeg')}}">
 		<p class="story-text">{{ volunteer.story }}</p>
 		<p class="story-text">{{ volunteer.first_name }} had an amazing time and really made an impact. You can too!</p>
 	</section>
-	
+
+	<!-- Volunteer Application Section -->
 	<section id="form-section" class="{{ error }}">
 		<h2>Sign Up Today</h2>
 		<p id="{{ error }}">Sorry, your previous application is still being reviewed.</p>

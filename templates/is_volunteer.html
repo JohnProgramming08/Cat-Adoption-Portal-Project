@@ -7,6 +7,7 @@
 
 {% block content %}
 <main id="{{ user.id }}" data-cat="{{ cat_id }}" data-transport="{{ user_transport }}" data-form="{{ form_id }}">
+	<!-- Deliveries Section -->
 	<section id="deliveries-section">
 		<h2>Due Deliveries</h2>
 		{% for review in reviews %}
@@ -18,6 +19,7 @@
 		{% endfor %}
 	</section>
 
+	<!-- Current Delivery Section -->
 	<section id="stages-section">
 		<h2>Current Delivery</h2>
 		<div id="cat-info">
