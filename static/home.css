@@ -194,7 +194,7 @@ input[name="username"] {
 	height: 40%;
 }
 
-#user-adoptions, #user-applications {
+#user-adoptions, #user-applications, #due-transports {
 	width: 90%;
 	padding: 5px;
 	max-height: 30vh;
@@ -202,7 +202,7 @@ input[name="username"] {
 	display: grid;	
 }
 
-.cat-form, .application-div {
+.cat-form, .application-div, .transport-div {
 	padding: 5px;
 	width: 100%;
 	border-radius: 7px;
@@ -211,16 +211,16 @@ input[name="username"] {
 	justify-content: space-between;
 }
 
-.cat-form:hover, .application-div:hover {
+.cat-form:hover, .application-div:hover, .transport-div:hover {
 	background-color: white;
 }
 
-.form-link, .application-link {
+.form-link, .application-link, .due-transport {
 	text-decoration: none;
 	color: black;
 }
 
-.form-link:hover, .application-link:hover {
+.form-link:hover, .application-link:hover, .due-transport:hover {
 	text-decoration: underline;
 	cursor: pointer;
 }

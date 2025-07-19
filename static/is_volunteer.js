@@ -225,5 +225,17 @@ async function checkTransports() {
 }
 
 checkTransports().then(() => {
+	// Highlight the selected one from the home page
+	try {
+		catDeliveries.forEach(delivery => {
+			if (delivery.id === main.dataset.clicked) {
+				delivery.parentElement.classList.add('clicked');
+				displayCatData(delivery.id);
+				startDeliveryBtn.style.display = 'flex';
+			}
+		});
+	} catch(e) {
+		console.log(e);
+	}
 	fillDeliveryGaps();
 });

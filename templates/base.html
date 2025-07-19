@@ -19,7 +19,7 @@
 			{% if user.level == "user" %}
 			<a href="/become_volunteer/{{ user.id }}" id="header-volunteer">Volunteer</a>
 			{% else %}
-			<a href="/is_volunteer/{{ user.id }}" id="header-volunteer">Volunteer</a>
+			<a href="/is_volunteer/{{ user.id }}/0" id="header-volunteer">Volunteer</a>
 			{% endif %}
 			{% if user.level == "admin" %}
 			<a href="/admin/{{ user.id }}" id="header-admin">Admin</a>
