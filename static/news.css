@@ -1,68 +1,71 @@
 /* Global Styles */
 body {
-    overflow-x: hidden;
+	overflow-x: hidden;
 }
 
 main {
 	display: grid;
 	gap: 30px;
 	padding: 20px;
-    overflow-y: auto;
+	overflow-y: auto;
 }
 
 /* Heading / Text Styles */
 h2 {
-    font-size: 2rem;
-    margin-bottom: 4px;
+	font-size: 2rem;
+	margin-bottom: 4px;
 }
 
 p {
 	overflow: auto;
-    margin-top: 12px;
+	margin-top: 12px;
 }
 
 /* Input Styles */
 /* News Form */
-input, textarea {
+input,
+textarea {
 	width: 50%;
-    font-size: 1.3rem;
-    padding: 5px;
+	font-size: 1.3rem;
+	padding: 5px;
 	border: none;
-    border-bottom: 3px solid orange;
-    transition: 0.5s ease-in-out;
-    margin-bottom: 30px;
-    margin-top: 5px;
-    resize: none;
+	border-bottom: 3px solid orange;
+	transition: 0.5s ease-in-out;
+	margin-bottom: 30px;
+	margin-top: 5px;
+	resize: none;
 }
 
 textarea {
-    height: 25vh;
-    width: 65%;
+	height: 25vh;
+	width: 65%;
 }
 
-input[type="text"]:focus, textarea:focus {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+input[type='text']:focus,
+textarea:focus {
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
 }
 
-input[type="submit"] {
+input[type='submit'] {
 	background-color: #9999ff;
 	color: white;
 	border: 3px solid transparent;
 	transition: 0.3s ease-in-out;
 	border-radius: 10px;
 	width: auto;
-    margin-bottom: none;
-    font-size: 2rem;
-    padding: 15px;
+	margin-bottom: none;
+	font-size: 2rem;
+	padding: 15px;
 }
 
 /* Erroneous previous input */
-.exists input, .exists textarea {
-    border: 2px solid red;
+.exists input,
+.exists textarea {
+	border: 2px solid red;
 }
 
-input[type="submit"]:hover {
+input[type='submit']:hover {
 	cursor: pointer;
 	border: 3px solid orange;
 	transition: 0.5s ease-in-out;
@@ -70,111 +73,113 @@ input[type="submit"]:hover {
 
 /* News Display Styles */
 .news-div {
-    position: relative;
-    border-radius: 10px;
-    background-color: whitesmoke;
-    padding: 20px;
-    overflow: hidden;
-    transition: border-color 0.3s;
-    display: flex;
+	position: relative;
+	border-radius: 10px;
+	background-color: whitesmoke;
+	padding: 20px;
+	overflow: hidden;
+	transition: border-color 0.3s;
+	display: flex;
 }
 
 .news-div * {
-    position: relative;
-    z-index: 2;
+	position: relative;
+	z-index: 2;
 }
 
 /* Orange sliding border animation */
 .news-div::after {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 0;
-    height: 100%;
-    border-radius: 10px;
-    box-sizing: border-box;
-    z-index: 1;
-    transition: width 0.4s;
-    pointer-events: none;
-    border: 3px solid orange;
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 100%;
+	border-radius: 10px;
+	box-sizing: border-box;
+	z-index: 1;
+	transition: width 0.4s;
+	pointer-events: none;
+	border: 3px solid orange;
 }
 
 .news-div:hover::after {
-    width: 100%;
+	width: 100%;
 }
 
 .content {
-    width: 84%;
+	width: 84%;
 }
 
-.edit, .delete {
-    width: 7%;
-    height: 100%;
-    background-color: grey;
-    font-size: 4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
+.edit,
+.delete {
+	width: 7%;
+	height: 100%;
+	background-color: grey;
+	font-size: 4rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
 }
 
 .edit:hover {
-    background-color: darkgrey;
+	background-color: darkgrey;
 }
 
-.edit-btn:hover, .delete-btn:hover {
-    cursor: pointer;
+.edit-btn:hover,
+.delete-btn:hover {
+	cursor: pointer;
 }
 
 .delete {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    background-color: #cc6666;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	background-color: #cc6666;
 }
 
 .delete:hover {
-    background-color: #ff5555;
+	background-color: #ff5555;
 }
 
 /* News Form Styles */
 form {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    background-color: #bbbbbb;
-    z-index: 10;
-    color: white;
-    border: 2px solid orange;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 60%;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.2rem;
+	background-color: #bbbbbb;
+	z-index: 10;
+	color: white;
+	border: 2px solid orange;
 }
 
 form div {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #cancel {
-    font-size: 1.8rem;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    transition: 0.3s ease-in-out;
-    color: black;
+	font-size: 1.8rem;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	transition: 0.3s ease-in-out;
+	color: black;
 }
 
 #cancel:hover {
-    transform: scale(1.5, 1.5);
-    color: red;
-    cursor: pointer;
+	transform: scale(1.5, 1.5);
+	color: red;
+	cursor: pointer;
 }
-

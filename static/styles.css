@@ -3,13 +3,14 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
-html, body {
+html,
+body {
 	width: 100vw;
 	height: 100vh;
-    font-size: 16px;
+	font-size: 16px;
 }
 
 .hidden {
@@ -40,14 +41,14 @@ header a {
 
 /* Orange expanding underline */
 header a::after {
-	content: "";
+	content: '';
 	position: absolute;
 	left: 0;
 	bottom: 0;
 	width: 0;
 	height: 3px;
 	background: orange;
-	transition: width 0.3s; 
+	transition: width 0.3s;
 }
 
 header a:hover::after {
@@ -63,60 +64,59 @@ header a:hover {
 	background-color: whitesmoke;
 }
 
-
 /* Global Form Styles */
 #screen-cover {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: 9;
-    background: transparent;
-    padding: 0;
-    margin: 0;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	z-index: 9;
+	background: transparent;
+	padding: 0;
+	margin: 0;
 }
 
 .center-form {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    background-color: #bbbbbb;
-    z-index: 10;
-    color: white;
-    border: 2px solid orange;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 60%;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.2rem;
+	background-color: #bbbbbb;
+	z-index: 10;
+	color: white;
+	border: 2px solid orange;
 }
 
 .form-cancel {
-    font-size: 1.8rem;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    transition: 0.3s ease-in-out;
-    color: black;
+	font-size: 1.8rem;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	transition: 0.3s ease-in-out;
+	color: black;
 }
 
 .form-cancel:hover {
-    transform: scale(1.5, 1.5);
-    color: red;
-    cursor: pointer;
+	transform: scale(1.5, 1.5);
+	color: red;
+	cursor: pointer;
 }
 
 /* Sliding Button Styles */
 .page-link-btn {
-    color: white;
-    background: linear-gradient(90deg, #ff9900 50%, #9999ff 50%);
-    background-size: 200% 100%;
-    background-position: right;
-    transition: background-position 0.3s ease;
-    border-radius: 10px;
+	color: white;
+	background: linear-gradient(90deg, #ff9900 50%, #9999ff 50%);
+	background-size: 200% 100%;
+	background-position: right;
+	transition: background-position 0.3s ease;
+	border-radius: 10px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -124,8 +124,8 @@ header a:hover {
 }
 
 .page-link-btn:hover {
-    background-position: left;
-    cursor: pointer;
+	background-position: left;
+	cursor: pointer;
 }
 
 #error {
@@ -135,28 +135,29 @@ header a:hover {
 
 /* + Button Styles */
 #new-btn {
-    font-size: 2rem;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: greenyellow;
-    color: white;
-    border: solid 2px green;
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 7;
+	font-size: 2rem;
+	padding: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: greenyellow;
+	color: white;
+	border: solid 2px green;
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	z-index: 7;
 }
 
 #new-btn:hover {
-    cursor: pointer;
-    background-color: green;
-    border: solid 2px greenyellow;
+	cursor: pointer;
+	background-color: green;
+	border: solid 2px greenyellow;
 }
 
 /* Cat / User List Styles */
-#cat-details, #user-details {
+#cat-details,
+#user-details {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -171,7 +172,8 @@ header a:hover {
 	border-bottom: none;
 }
 
-#user-details *, #cat-details * {
+#user-details *,
+#cat-details * {
 	padding-top: 3px;
 	padding-bottom: 3px;
 }

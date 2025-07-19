@@ -77,8 +77,8 @@ h4 {
 
 /* Input Styles */
 /* Username Form */
-input[name="username"] {
-    width: 40%;
+input[name='username'] {
+	width: 40%;
 	border: none;
 	padding: 2px;
 	font-size: 1.2rem;
@@ -88,7 +88,6 @@ input[name="username"] {
 .exists input {
 	border: 2px solid red;
 }
-
 
 /* Profile Div Styles */
 #profile-div {
@@ -137,12 +136,14 @@ input[name="username"] {
 }
 
 /* Username Form Styles */
-.cancel, .save {
+.cancel,
+.save {
 	transition: 0.3s ease-in-out;
 	border: none;
 }
 
-.cancel:hover, .save:hover {
+.cancel:hover,
+.save:hover {
 	color: red;
 	transform: scale(1.2, 1.2);
 	transition: 0.3s ease-in-out;
@@ -176,13 +177,14 @@ input[name="username"] {
 
 #news-btn {
 	margin-top: 25px;
-    width: 45%;
-    font-size: 1.4rem;
-    height: 7vh;
+	width: 45%;
+	font-size: 1.4rem;
+	height: 7vh;
 }
 
 /* Adoptions and Volunteer Div Styles */
-#adoptions-div, #volunteer-div {
+#adoptions-div,
+#volunteer-div {
 	width: 40vw;
 	height: 40%;
 	display: flex;
@@ -194,15 +196,19 @@ input[name="username"] {
 	height: 40%;
 }
 
-#user-adoptions, #user-applications, #due-transports {
+#user-adoptions,
+#user-applications,
+#due-transports {
 	width: 90%;
 	padding: 5px;
 	max-height: 30vh;
 	overflow: auto;
-	display: grid;	
+	display: grid;
 }
 
-.cat-form, .application-div, .transport-div {
+.cat-form,
+.application-div,
+.transport-div {
 	padding: 5px;
 	width: 100%;
 	border-radius: 7px;
@@ -211,21 +217,28 @@ input[name="username"] {
 	justify-content: space-between;
 }
 
-.cat-form:hover, .application-div:hover, .transport-div:hover {
+.cat-form:hover,
+.application-div:hover,
+.transport-div:hover {
 	background-color: white;
 }
 
-.form-link, .application-link, .due-transport {
+.form-link,
+.application-link,
+.due-transport {
 	text-decoration: none;
 	color: black;
 }
 
-.form-link:hover, .application-link:hover, .due-transport:hover {
+.form-link:hover,
+.application-link:hover,
+.due-transport:hover {
 	text-decoration: underline;
 	cursor: pointer;
 }
 
-#adoption-btn, #volunteer-btn {
+#adoption-btn,
+#volunteer-btn {
 	width: 40%;
 	height: 7vh;
 	font-size: 1.4rem;
@@ -234,7 +247,8 @@ input[name="username"] {
 	margin-bottom: 10px;
 }
 
-.no-adoptions, .not-volunteer {
+.no-adoptions,
+.not-volunteer {
 	width: 100%;
 	font-size: 1.3rem;
 	margin-bottom: 10px;
@@ -255,7 +269,9 @@ input[name="username"] {
 }
 
 /* Adoption Form and Volunteer Application Info Styles */
-#cat-details *, #user-details *, #application-show * {
+#cat-details *,
+#user-details *,
+#application-show * {
 	text-align: center;
 }
 
@@ -263,11 +279,13 @@ input[name="username"] {
 	padding: 10px;
 }
 
-#cat-details, #user-details {
+#cat-details,
+#user-details {
 	background-color: #bbbbbb;
 }
 
-#cancel-cat, #cancel-volunteer {
+#cancel-cat,
+#cancel-volunteer {
 	padding: 0;
 }
 
@@ -283,7 +301,8 @@ input[name="username"] {
 	padding: 10px;
 }
 
-#confirm-header, #confirm-div {
+#confirm-header,
+#confirm-div {
 	display: none;
 }
 
@@ -310,5 +329,5 @@ input[name="username"] {
 }
 
 #no-btn {
-	background-color:rgb(149, 33, 33);
+	background-color: rgb(149, 33, 33);
 }

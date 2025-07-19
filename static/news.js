@@ -24,7 +24,7 @@ async function getNews(id) {
 //  Add the news info to the input fields
 editBtns.forEach((btn) => {
 	btn.addEventListener('click', (e) => {
-		getNews(e.target.id).then(data => {
+		getNews(e.target.id).then((data) => {
 			headlineEntry.value = data.headline;
 			descriptionEntry.value = data.description;
 			idEntry.value = data.id;
@@ -39,7 +39,7 @@ newBtn.addEventListener('click', () => {
 	form.classList.remove('hidden');
 	screenCover.classList.remove('hidden');
 	headlineEntry.value = '';
-	descriptionEntry.value= '';
+	descriptionEntry.value = '';
 	idEntry.value = 0;
 });
 
@@ -48,8 +48,8 @@ async function deleteNews(id) {
 	window.location.reload();
 }
 
-deleteBtns.forEach(btn => {
-	btn.addEventListener('click', e => {
+deleteBtns.forEach((btn) => {
+	btn.addEventListener('click', (e) => {
 		deleteNews(e.target.id);
 	});
 });

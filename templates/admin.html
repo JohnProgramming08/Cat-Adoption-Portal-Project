@@ -1,11 +1,10 @@
-{% extends "base.html" %}
-
-{% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+{% endblock %} {% block content %}
 <div id="screen-cover" class="hidden"></div>
 
 <main>
@@ -16,8 +15,8 @@
 			<div id="cat-details">
 				<h2>Cat Details</h2>
 				<div class="identity">
-					<h3 id="cat-id">Cat ID: </h3>
-					<h3 id="cat-name">Cat Name: </h3>
+					<h3 id="cat-id">Cat ID:</h3>
+					<h3 id="cat-name">Cat Name:</h3>
 				</div>
 				<h3>Cat Bio</h3>
 				<p id="cat-bio"></p>
@@ -26,11 +25,11 @@
 			<div id="user-details">
 				<h2>User Details</h2>
 				<div class="identity">
-					<h3 id="username">Username: </h3>
-					<h3 id="user-id">User ID: </h3>
+					<h3 id="username">Username:</h3>
+					<h3 id="user-id">User ID:</h3>
 				</div>
-				<h3 id="user-address">Address: </h3>
-				<h3 id="other-pets">Other Pets: </h3>
+				<h3 id="user-address">Address:</h3>
+				<h3 id="other-pets">Other Pets:</h3>
 				<h3>Reason</h3>
 				<p id="reason"></p>
 			</div>
@@ -39,57 +38,53 @@
 			<div id="volunteer-details">
 				<h2>Volunteer Form Details</h2>
 				<div class="identity">
-					<h3 id="volunteer-username">Username: </h3>
-					<h3 id="volunteer-id">User ID: </h3>
+					<h3 id="volunteer-username">Username:</h3>
+					<h3 id="volunteer-id">User ID:</h3>
 				</div>
 				<div class="identity">
-					<h3 id="first-name">First Name: </h3>
-					<h3 id="last-name">Last Name: </h3>
+					<h3 id="first-name">First Name:</h3>
+					<h3 id="last-name">Last Name:</h3>
 				</div>
-				<h3 id="volunteer-address">Address: </h3>
-				<h3 id="age">Age: </h3>
+				<h3 id="volunteer-address">Address:</h3>
+				<h3 id="age">Age:</h3>
 				<h3>Reason</h3>
 				<p id="volunteer-reason"></p>
 			</div>
 		</div>
 
 		<form action="/admin/{{ user.id }}" method="post">
-			{{ review_form.hidden_tag() }}
-			{{ review_form.type() }}
-			{{ review_form.form_id() }}
-			{{ review_form.reason.label }}
-			{{ review_form.reason() }}
-			{{ review_form.accept() }}
-			{{ review_form.decline() }}
+			{{ review_form.hidden_tag() }} {{ review_form.type() }} {{
+			review_form.form_id() }} {{ review_form.reason.label }} {{
+			review_form.reason() }} {{ review_form.accept() }} {{
+			review_form.decline() }}
 		</form>
 		<i class="fas fa-xmark form-cancel"></i>
 	</section>
 	<!-- Show all of the non-reviewed adoption forms -->
 	<section id="cat-form-section">
 		<h2>Cat Adoption Forms</h2>
-		{% for form in adoption_forms %}
-		{% if form.review %}
-		{% else %}
+		{% for form in adoption_forms %} {% if form.review %} {% else %}
 		<div class="cat-form">
 			<p>User ID: {{ form.user_id }} Cat ID: {{ form.cat.id }}</p>
-			<p class="form-link" id="{{ form.id }}">{{ form.id }} -|- Cat adoption form for {{ form.cat.name }}</p>
+			<p class="form-link" id="{{ form.id }}">
+				{{ form.id }} -|- Cat adoption form for {{ form.cat.name }}
+			</p>
 		</div>
-		{% endif %}
-		{% endfor %}
+		{% endif %} {% endfor %}
 	</section>
 
 	<!-- Show all of the non-reviewed volunteer forms -->
 	<section id="volunteer-form-section">
 		<h2>Volunteer Application Forms</h2>
-		{% for form in volunteer_forms %}
-		{% if form.review %}
-		{% else %}
+		{% for form in volunteer_forms %} {% if form.review %} {% else %}
 		<div class="volunteer-form">
 			<p>User ID: {{ form.user_id }}</p>
-			<p class="form-link" id="{{ form.id }}">{{ form.id }} -|- Volunteer application form from {{ form.first_name }}</p>
+			<p class="form-link" id="{{ form.id }}">
+				{{ form.id }} -|- Volunteer application form from {{
+				form.first_name }}
+			</p>
 		</div>
-		{% endif %}
-		{% endfor %}
+		{% endif %} {% endfor %}
 	</section>
 </main>
 

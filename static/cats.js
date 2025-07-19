@@ -13,8 +13,8 @@ const error = document.getElementById('error-msg');
 
 // Adoption section
 // Open an adoption form for that specific cat
-adoptButtons.forEach(button => {
-	button.addEventListener('click', e => {
+adoptButtons.forEach((button) => {
+	button.addEventListener('click', (e) => {
 		const catId = e.target.id;
 		catIdInput.value = catId;
 		screenCover.classList.remove('hidden');
@@ -24,15 +24,15 @@ adoptButtons.forEach(button => {
 
 // Close the adoption form and clear the fields
 cancel.addEventListener('click', () => {
-	form.id = "none";
+	form.id = 'none';
 	error.textContent = '';
 	form.classList.add('hidden');
 	screenCover.classList.add('hidden');
-	fields.forEach(field => {
+	fields.forEach((field) => {
 		if (field.type !== 'submit') {
 			field.value = '';
 		}
-	})
+	});
 });
 
 if (form.id === 'exists') {

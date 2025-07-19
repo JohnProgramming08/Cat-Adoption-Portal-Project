@@ -1,175 +1,180 @@
 /* Global Styles */
 body {
-    background-color: #ffe1f3;
-    overflow-x: hidden;
+	background-color: #ffe1f3;
+	overflow-x: hidden;
 }
 
 main {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4rem;
-    width: 90%;
-    margin: auto;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 4rem;
+	width: 90%;
+	margin: auto;
 }
 
 /* Cat Listing Styles */
 .cat-listing {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 3px solid transparent;
-    transition: 0.3s ease-in-out;
-    border-bottom-left-radius: 17px;
-    border-bottom-right-radius: 17px;
-    z-index: 5;
-    overflow: hidden;
+	margin-top: 15px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border: 3px solid transparent;
+	transition: 0.3s ease-in-out;
+	border-bottom-left-radius: 17px;
+	border-bottom-right-radius: 17px;
+	z-index: 5;
+	overflow: hidden;
 }
 
 .cat-listing:hover {
-    border: 3px solid orange;
+	border: 3px solid orange;
 }
 
 .cat-text {
-    width: 100%;
-    background-color: lightpink;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: purple;
-    z-index: 4;
+	width: 100%;
+	background-color: lightpink;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: purple;
+	z-index: 4;
 }
 
 .cat-img {
-    width: 100%;
+	width: 100%;
 }
 
 /* Cat Information Styles */
 .name {
-    margin-top: 20px;
-    font-size: 1.7rem;
-    margin-bottom: 5px;
+	margin-top: 20px;
+	font-size: 1.7rem;
+	margin-bottom: 5px;
 }
 
 .bio {
-    margin: 10px;
-    font-size: 1.4rem;
+	margin: 10px;
+	font-size: 1.4rem;
 }
 
 /* Button Styles */
 .cat-btn {
-    height: 7vh;
-    width: 45%;
-    font-size: 1.4rem;
-    margin-bottom: 10px;
+	height: 7vh;
+	width: 45%;
+	font-size: 1.4rem;
+	margin-bottom: 10px;
 }
 
 .cat-btn:hover {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 /* Form Styles */
 form {
-    position: fixed;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    background-color: #bbbbbb;
-    z-index: 10;
-    color: white;
-    border: 2px solid orange;
+	position: fixed;
+	top: 55%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 60%;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.2rem;
+	background-color: #bbbbbb;
+	z-index: 10;
+	color: white;
+	border: 2px solid orange;
 }
 
 form div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 60%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	width: 60%;
 }
 
 /* Input Styles */
 /* Cat Adoption Form */
-input, textarea {
-    width: 50%;
-    font-size: 1.3rem;
-    padding: 5px;
-    border: none;
-    border-bottom: 3px solid orange;
-    transition: 0.5s ease-in-out;
-    margin-bottom: 30px;
-    margin-top: 5px;
-    resize: none;
+input,
+textarea {
+	width: 50%;
+	font-size: 1.3rem;
+	padding: 5px;
+	border: none;
+	border-bottom: 3px solid orange;
+	transition: 0.5s ease-in-out;
+	margin-bottom: 30px;
+	margin-top: 5px;
+	resize: none;
 }
 
 textarea {
-    height: 25vh;
-    width: 65%;
+	height: 25vh;
+	width: 65%;
 }
 
-input[name="other_pets"] {
-    width: 35%;
+input[name='other_pets'] {
+	width: 35%;
 }
 
 /* Input Focus Styles */
-input[type="text"]:focus, input[name="other_pets"]:focus, textarea:focus {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+input[type='text']:focus,
+input[name='other_pets']:focus,
+textarea:focus {
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
 }
 
 /* Submit Button Styles */
-input[type="submit"] {
-    background-color: #9999ff;
-    color: white;
-    border: 3px solid transparent;
-    transition: 0.3s ease-in-out;
-    border-radius: 10px;
-    width: auto;
-    margin-bottom: none;
-    font-size: 2rem;
-    padding: 15px;
+input[type='submit'] {
+	background-color: #9999ff;
+	color: white;
+	border: 3px solid transparent;
+	transition: 0.3s ease-in-out;
+	border-radius: 10px;
+	width: auto;
+	margin-bottom: none;
+	font-size: 2rem;
+	padding: 15px;
 }
 
-input[type="submit"]:hover {
-    cursor: pointer;
-    border: 3px solid orange;
-    transition: 0.5s ease-in-out;
+input[type='submit']:hover {
+	cursor: pointer;
+	border: 3px solid orange;
+	transition: 0.5s ease-in-out;
 }
 
 /* Cancel Button Styles */
 #cancel {
-    font-size: 1.8rem;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    transition: 0.3s ease-in-out;
-    color: black;
+	font-size: 1.8rem;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	transition: 0.3s ease-in-out;
+	color: black;
 }
 
 #cancel:hover {
-    transform: scale(1.5, 1.5);
-    color: red;
-    cursor: pointer;
+	transform: scale(1.5, 1.5);
+	color: red;
+	cursor: pointer;
 }
 
 /* Error and Validation Styles */
 #exists {
-    display: flex;
+	display: flex;
 }
 
-#exists input[type="text"], #exists input[type="number"], #exists textarea {
-    border: 3px solid red;
+#exists input[type='text'],
+#exists input[type='number'],
+#exists textarea {
+	border: 3px solid red;
 }
 
 #error-msg {
-    color: red;
+	color: red;
 }

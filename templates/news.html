@@ -1,11 +1,10 @@
-{% extends "base.html" %}
-
-{% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='news.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='news.css') }}" />
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+{% endblock %} {% block content %}
 <div id="screen-cover" class="hidden"></div>
 
 <main>
@@ -14,7 +13,9 @@
 		{{ form.hidden_tag() }}
 		<i class="fas fa-xmark cancel" id="cancel"></i>
 		<p class="hidden">{{ form.id }}</p>
-		<p id="error" class="{{ error }} hidden">That headline or description is already in use.</p>
+		<p id="error" class="{{ error }} hidden">
+			That headline or description is already in use.
+		</p>
 		{{ form.headline.label }}
 		<div class="{{ error }}">{{ form.headline() }}</div>
 		{{ form.description.label }}
@@ -46,7 +47,6 @@
 		{% endif %}
 	</div>
 	{% endfor %}
-	
 </main>
 <script src="{{ url_for('static', filename='news.js') }}"></script>
 {% endblock %}

@@ -1,11 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>Cat Adoption Portal</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='styles.css') }}"
+		/>
 		{% block style %}{% endblock %}
 	</head>
 
@@ -17,16 +20,17 @@
 			<a href="/news/{{ user.id }}" id="header-news">News</a>
 			<a href="/cats/{{ user.id }}" id="header-cats">View Cats</a>
 			{% if user.level == "user" %}
-			<a href="/become_volunteer/{{ user.id }}" id="header-volunteer">Volunteer</a>
+			<a href="/become_volunteer/{{ user.id }}" id="header-volunteer"
+				>Volunteer</a
+			>
 			{% else %}
-			<a href="/is_volunteer/{{ user.id }}/0" id="header-volunteer">Volunteer</a>
-			{% endif %}
-			{% if user.level == "admin" %}
+			<a href="/is_volunteer/{{ user.id }}/0" id="header-volunteer"
+				>Volunteer</a
+			>
+			{% endif %} {% if user.level == "admin" %}
 			<a href="/admin/{{ user.id }}" id="header-admin">Admin</a>
 			{% endif %}
 		</header>
-		{% endif %}
-
-		{% block content %}{% endblock %}
+		{% endif %} {% block content %}{% endblock %}
 	</body>
 </html>
