@@ -121,9 +121,6 @@ cancelBtn.addEventListener('click', () => {
 if (author.textContent.length > 20) {
 	author.textContent = author.textContent.slice(0, 15) + '...';
 }
-if (headline.textContent.length > 15) {
-	headline.textContent = headline.textContent.slice(0, 15) + '...';
-}
 
 // Cat adoption section
 async function getForm(id, type) {

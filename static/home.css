@@ -9,6 +9,7 @@ main {
 	align-items: center;
 	width: 100%;
 	height: 90%;
+	background: linear-gradient(135deg, #232526 0%, #414345 40%, #2c5364 100%);
 }
 
 form {
@@ -68,6 +69,10 @@ h2 {
 h3 {
 	width: 100%;
 	font-size: 1.8rem;
+}
+
+#newest-news h3 {
+	font-size: 1.5rem;
 }
 
 h4 {
@@ -167,12 +172,14 @@ input[name='username'] {
 #newest-news {
 	width: 100%;
 	height: 15vh;
+	max-height: 15vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	background-color: #dddddd;
+	background-color: white;
 	padding: 10px;
 	border-radius: 5px;
+	border: 1px solid blueviolet;
 }
 
 #news-btn {
@@ -277,11 +284,6 @@ input[name='username'] {
 
 #application-show * {
 	padding: 10px;
-}
-
-#cat-details,
-#user-details {
-	background-color: #bbbbbb;
 }
 
 #cancel-cat,
