@@ -9,9 +9,9 @@
 
 <main>
 	<!-- News Form -->
-	<form action="/news/{{ user.id }}" method="post" id="form" class="hidden">
+	<form action="/news/{{ user.id }}" method="post" id="form" class="center-form">
 		{{ form.hidden_tag() }}
-		<i class="fas fa-xmark cancel" id="cancel"></i>
+		<i class="fas fa-xmark form-cancel" id="cancel"></i>
 		<p class="hidden">{{ form.id }}</p>
 		<p id="error" class="{{ error }} hidden">
 			That headline or description is already in use.

@@ -29,14 +29,14 @@ editBtns.forEach((btn) => {
 			descriptionEntry.value = data.description;
 			idEntry.value = data.id;
 		});
-		form.classList.remove('hidden');
+		form.style.display = 'flex';
 		screenCover.classList.remove('hidden');
 	});
 });
 
 // Display a form for creating a new article
 newBtn.addEventListener('click', () => {
-	form.classList.remove('hidden');
+	form.style.display = 'flex';
 	screenCover.classList.remove('hidden');
 	headlineEntry.value = '';
 	descriptionEntry.value = '';
@@ -56,11 +56,11 @@ deleteBtns.forEach((btn) => {
 
 // News form section
 cancelBtn.addEventListener('click', () => {
-	form.classList.add('hidden');
+	form.style.display = 'none';
 	screenCover.classList.add('hidden');
 });
 
 if (error.classList.contains('exists')) {
 	error.classList.remove('hidden');
-	form.classList.remove('hidden');
+	form.style.display = 'flex';
 }

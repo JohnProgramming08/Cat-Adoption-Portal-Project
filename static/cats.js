@@ -18,7 +18,7 @@ adoptButtons.forEach((button) => {
 		const catId = e.target.id;
 		catIdInput.value = catId;
 		screenCover.classList.remove('hidden');
-		form.classList.remove('hidden');
+		form.style.display = 'flex';
 	});
 });
 
@@ -26,7 +26,7 @@ adoptButtons.forEach((button) => {
 cancel.addEventListener('click', () => {
 	form.id = 'none';
 	error.textContent = '';
-	form.classList.add('hidden');
+	form.style.display = 'none';
 	screenCover.classList.add('hidden');
 	fields.forEach((field) => {
 		if (field.type !== 'submit') {
@@ -36,5 +36,5 @@ cancel.addEventListener('click', () => {
 });
 
 if (form.id === 'exists') {
-	form.classList.remove('hidden');
+	form.style.display = 'flex';
 }

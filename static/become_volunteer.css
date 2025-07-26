@@ -18,6 +18,7 @@ section {
 	background-color: whitesmoke;
 	box-shadow: 4px 4px 4px black;
 	transition: 0.3s ease-in-out;
+    border: 2px solid orange;
 }
 
 section:hover {
