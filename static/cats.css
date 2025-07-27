@@ -14,34 +14,37 @@ main {
 
 /* Cat Listing Styles */
 .cat-listing {
-	margin-top: 15px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	border: 3px solid transparent;
-	transition: 0.3s ease-in-out;
-	border-bottom-left-radius: 17px;
-	border-bottom-right-radius: 17px;
-	z-index: 5;
-	overflow: hidden;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid transparent;
+    transition: 0.3s ease-in-out;
+    border-bottom-left-radius: 17px;
+    border-bottom-right-radius: 17px;
+    z-index: 5;
+    overflow: hidden;
 }
 
 .cat-listing:hover {
-	border: 3px solid orange;
+    border: 3px solid orange;
 }
 
 .cat-text {
-	width: 100%;
-	background-color: white;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	z-index: 4;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px; 
 }
 
 .cat-img {
-	width: 100%;
+    width: 100%;
+    display: block; 
 }
 
 /* Cat Information Styles */
@@ -161,4 +164,131 @@ input[type='submit']:hover {
 
 #error-msg {
 	color: red;
+}
+
+/* Tablet and smaller desktop screens */
+@media screen and (max-width: 1024px) {
+    main {
+        flex-direction: column;
+        height: auto;
+        gap: 20px;
+        padding: 10px;
+    }
+
+    #volunteer-story,
+    #form-section {
+        width: 90%;
+        height: auto;
+        min-height: 400px;
+    }
+
+    #form-section {
+        min-height: 500px;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+        letter-spacing: 1.5px;
+    }
+
+    #volunteer-img {
+        width: 50%;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    input[type='text'],
+    textarea,
+    input[type='number'] {
+        width: 70%;
+        font-size: 1rem;
+    }
+
+    textarea {
+        width: 80%;
+        height: 15vh;
+    }
+
+    input[type='submit'] {
+        font-size: 1.8rem;
+    }
+}
+
+/* Mobile screens */
+@media screen and (max-width: 768px) {
+    main {
+        padding: 5px;
+        gap: 15px;
+    }
+
+    section {
+        padding: 15px;
+        margin: 0 5px;
+        border-radius: 20px;
+    }
+
+    #volunteer-story,
+    #form-section {
+        width: 95%;
+        height: auto;
+        min-height: 350px;
+    }
+
+    #form-section {
+        min-height: 450px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+        line-height: 1.3;
+        margin: 0 0 15px 0;
+        padding: 0 5px;
+    }
+
+    #volunteer-img {
+        width: 60%;
+    }
+
+    form {
+        padding: 10px;
+    }
+
+    input[type='text'],
+    input[type='number'] {
+        width: 90%;
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    textarea {
+        width: 90%;
+        height: 12vh;
+        min-height: 12vh;
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    input[type='number'] {
+        width: 6rem;
+    }
+
+    input[type='submit'] {
+        font-size: 1.5rem;
+        padding: 12px 20px;
+        margin-top: 10px;
+    }
+
+    /* Error and success states remain visible on mobile */
+    .exists input[type='text'],
+    .exists input[type='number'],
+    .exists textarea {
+        border: 3px solid red;
+    }
+
+    .success {
+        border: 3px solid green;
+    }
 }

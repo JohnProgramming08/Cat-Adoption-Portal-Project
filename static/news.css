@@ -154,4 +154,142 @@ form div {
 	align-items: center;
 }
 
+/* Tablet and smaller desktop screens */
+@media screen and (max-width: 1024px) {
+    main {
+        flex-direction: column;
+        height: auto;
+        gap: 20px;
+        padding: 10px;
+    }
 
+    #about-section {
+        width: 100%;
+        order: 2;
+    }
+
+    #login-section {
+        width: 100%;
+        order: 1;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        min-height: 300px;
+    }
+
+    #content {
+        width: 100%;
+    }
+
+    img {
+        width: 60%;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+        padding-top: 15px;
+    }
+
+    h2 {
+        font-size: 2.1rem;
+        padding: 15px;
+    }
+
+    h3 {
+        font-size: 1.6rem;
+    }
+
+    p {
+        font-size: 1.1rem;
+    }
+
+    i {
+        font-size: 2rem;
+    }
+
+    input {
+        height: auto;
+        font-size: 1.6rem;
+        margin-bottom: 30px;
+        padding: 8px;
+    }
+
+    input[type='submit'] {
+        font-size: 1.8rem;
+        width: 50%;
+    }
+}
+
+/* Mobile screens */
+@media screen and (max-width: 768px) {
+    main {
+        padding: 5px;
+        gap: 15px;
+    }
+
+    #about-section {
+        width: 100%;
+    }
+
+    #login-section {
+        width: 100%;
+        border-radius: 15px;
+        margin: 0 5px;
+        min-height: 250px;
+        padding: 15px;
+    }
+
+    #content {
+        width: 100%;
+        padding: 10px;
+    }
+
+    img {
+        width: 80%;
+    }
+
+    h1 {
+        font-size: 2rem;
+        padding-top: 10px;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        padding: 10px;
+        text-align: center;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    p {
+        font-size: 1rem;
+        text-align: justify;
+    }
+
+    .info-div {
+        padding-top: 8px;
+        text-align: center;
+    }
+
+    .info-div:first-of-type {
+        padding-top: 15px;
+    }
+
+    input {
+        font-size: 1.4rem;
+        margin-bottom: 25px;
+        padding: 6px;
+        width: 90%;
+    }
+
+    input[type='submit'] {
+        font-size: 1.5rem;
+        width: 60%;
+        padding: 10px;
+    }
+}

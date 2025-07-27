@@ -184,3 +184,19 @@ header a:hover {
 	padding-bottom: 3px;
 	text-align: left;
 }
+
+/* Tablet and smaller desktop screens */
+@media screen and (max-width: 1024px) {
+    header a {
+        font-size: 2rem;
+        width: 20%;
+        margin: 10px;
+    }
+}
+
+/* Mobile screens */
+@media screen and (max-width: 768px) {
+    header a {
+        font-size: 1.5rem;
+    }
+}
